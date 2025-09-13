@@ -74,9 +74,9 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
-      <nav className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
+      <nav className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <motion.div 
             className="flex items-center gap-2 cursor-pointer"
@@ -84,21 +84,15 @@ export default function Landing() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Shield className="h-8 w-8 text-blue-400" />
+            <Shield className="h-8 w-8" />
             <span className="text-xl font-bold">FraudShield AI</span>
           </motion.div>
           
           <div className="flex items-center gap-4">
-            <Button 
-              variant="ghost" 
-              className="text-slate-300 hover:text-white hover:bg-slate-800"
-            >
+            <Button variant="ghost">
               Features
             </Button>
-            <Button 
-              variant="ghost" 
-              className="text-slate-300 hover:text-white hover:bg-slate-800"
-            >
+            <Button variant="ghost">
               About
             </Button>
             {/* Dark/Light toggle button */}
@@ -107,15 +101,11 @@ export default function Landing() {
               size="icon"
               onClick={toggleDark}
               aria-label="Toggle dark mode"
-              className="border-slate-700 text-slate-300 hover:bg-slate-800"
+              className=""
             >
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
-            <Button 
-              onClick={handleGetStarted}
-              disabled={isLoading}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
+            <Button onClick={handleGetStarted} disabled={isLoading}>
               {isAuthenticated ? "Dashboard" : "Get Started"}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>

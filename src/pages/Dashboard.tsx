@@ -298,23 +298,23 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm">
+      <header className="border-b border-border bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate("/")}
-              className="text-slate-400 hover:text-white"
+              className=""
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Home
             </Button>
             <div className="flex items-center gap-2">
-              <Shield className="h-6 w-6 text-blue-400" />
-              <span className="text-xl font-bold text-white">FraudShield AI</span>
+              <Shield className="h-6 w-6" />
+              <span className="text-xl font-bold">FraudShield AI</span>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -322,17 +322,17 @@ export default function Dashboard() {
               variant="outline"
               size="icon"
               onClick={toggleDark}
-              className="border-slate-700 text-slate-300 hover:bg-slate-800"
+              className=""
               aria-label="Toggle dark mode"
             >
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
             {user && (
-              <span className="hidden sm:block text-slate-400">
+              <span className="hidden sm:block text-muted-foreground">
                 Welcome, {user.name || user.email || "User"}
               </span>
             )}
-            <Button variant="outline" onClick={signOut} className="border-slate-700 text-slate-300 hover:bg-slate-800">
+            <Button variant="outline" onClick={signOut} className="">
               Sign Out
             </Button>
           </div>
@@ -342,18 +342,18 @@ export default function Dashboard() {
       <div className="container mx-auto px-4 py-8">
         {/* Stats Strip */}
         <div className="mb-6">
-          <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4 flex flex-col sm:flex-row items-center justify-center gap-4 text-slate-300">
+          <div className="bg-card border border-border rounded-lg p-4 flex flex-col sm:flex-row items-center justify-center gap-4 text-foreground">
             <div className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4 text-green-400" />
-              <span>Scams Analyzed: <span className="text-white font-semibold">{stats.analyzed}</span></span>
+              <CheckCircle className="h-4 w-4" />
+              <span>Scams Analyzed: <span className="font-semibold">{stats.analyzed}</span></span>
             </div>
             <div className="flex items-center gap-2">
-              <Shield className="h-4 w-4 text-blue-400" />
-              <span>Blocked: <span className="text-white font-semibold">{stats.blocked}</span></span>
+              <Shield className="h-4 w-4" />
+              <span>Blocked: <span className="font-semibold">{stats.blocked}</span></span>
             </div>
             <div className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-purple-400" />
-              <span>Users Protected: <span className="text-white font-semibold">{stats.users}</span></span>
+              <FileText className="h-4 w-4" />
+              <span>Users Protected: <span className="font-semibold">{stats.users}</span></span>
             </div>
           </div>
         </div>
@@ -369,26 +369,26 @@ export default function Dashboard() {
           </div>
 
           {/* Main Detection Interface */}
-          <Card className="bg-slate-900/50 border-slate-700 mb-8">
+          <Card className="bg-card border-border mb-8">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Shield className="h-5 w-5 text-blue-400" />
+              <CardTitle className="flex items-center gap-2">
+                <Shield className="h-5 w-5" />
                 Content Analysis
               </CardTitle>
             </CardHeader>
             <CardContent>
               <Tabs value={activeTab} onValueChange={setActiveTab}>
                 {/* Make tab triggers in a single horizontal row with scroll on small screens */}
-                <TabsList className="flex w-full items-center gap-2 overflow-x-auto whitespace-nowrap bg-slate-800 border-slate-700 p-1 rounded-md">
-                  <TabsTrigger value="text" className="shrink-0 data-[state=active]:bg-blue-600 data-[state=active]:text-white px-4 py-2 rounded-md">
+                <TabsList className="flex w-full items-center gap-2 overflow-x-auto whitespace-nowrap bg-muted p-1 rounded-md">
+                  <TabsTrigger value="text" className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-md">
                     <FileText className="h-4 w-4 mr-2" />
                     Text
                   </TabsTrigger>
-                  <TabsTrigger value="audio" className="shrink-0 data-[state=active]:bg-blue-600 data-[state=active]:text-white px-4 py-2 rounded-md">
+                  <TabsTrigger value="audio" className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-md">
                     <Mic className="h-4 w-4 mr-2" />
                     Audio
                   </TabsTrigger>
-                  <TabsTrigger value="video" className="shrink-0 data-[state=active]:bg-blue-600 data-[state=active]:text-white px-4 py-2 rounded-md">
+                  <TabsTrigger value="video" className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-md">
                     <Video className="h-4 w-4 mr-2" />
                     Video
                   </TabsTrigger>
@@ -396,14 +396,14 @@ export default function Dashboard() {
 
                 <TabsContent value="text" className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium text-slate-300 mb-2 block">
+                    <label className="text-sm font-medium text-foreground mb-2 block">
                       Paste suspicious text or upload file
                     </label>
                     <Textarea
                       placeholder="Paste the suspicious message here..."
                       value={textInput}
                       onChange={(e) => setTextInput(e.target.value)}
-                      className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 min-h-[120px]"
+                      className="min-h-[120px]"
                     />
                   </div>
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
@@ -411,13 +411,13 @@ export default function Dashboard() {
                       type="file"
                       accept=".txt,.csv,text/plain"
                       onChange={(e) => handleTextFile(e.target.files?.[0] || null)}
-                      className="bg-slate-800 border-slate-700 text-slate-300 file:bg-slate-700 file:text-slate-300 file:border-0"
+                      className="file:border-0"
                     />
                     <div className="flex gap-3">
                       <Button
                         onClick={() => handleAnalyze('text', textInput)}
                         disabled={isAnalyzing || !textInput.trim()}
-                        className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
+                        className="w-full sm:w-auto"
                       >
                         {isAnalyzing ? (
                           <>
@@ -435,7 +435,7 @@ export default function Dashboard() {
                         variant="outline"
                         onClick={() => handleUseSample('text')}
                         disabled={isAnalyzing}
-                        className="border-slate-700 text-slate-300 hover:bg-slate-800 w-full sm:w-auto"
+                        className="w-full sm:w-auto"
                       >
                         {isAnalyzing ? (
                           <>
@@ -452,18 +452,18 @@ export default function Dashboard() {
 
                 <TabsContent value="audio" className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium text-slate-300 mb-2 block">
+                    <label className="text-sm font-medium text-foreground mb-2 block">
                       Upload audio file for voice analysis
                     </label>
-                    <div className="border-2 border-dashed border-slate-700 rounded-lg p-8 text-center bg-slate-800/50">
-                      <Upload className="h-12 w-12 text-slate-500 mx-auto mb-4" />
-                      <p className="text-slate-400 mb-2">Drop audio files here or click to browse</p>
-                      <p className="text-sm text-slate-500">Supports .mp3, .wav, .m4a files</p>
+                    <div className="border-2 border-dashed border-border rounded-lg p-8 text-center bg-card/50">
+                      <Upload className="h-12 w-12 mx-auto mb-4" />
+                      <p className="text-muted-foreground mb-2">Drop audio files here or click to browse</p>
+                      <p className="text-sm text-muted-foreground">Supports .mp3, .wav, .m4a files</p>
                       <Input
                         type="file"
                         accept=".mp3,.wav,.m4a,audio/*"
                         onChange={(e) => handleAudioFile(e.target.files?.[0] || null)}
-                        className="mt-4 bg-slate-800 border-slate-700 text-slate-300 file:bg-slate-700 file:text-slate-300 file:border-0"
+                        className="mt-4 file:border-0"
                       />
                     </div>
                   </div>
@@ -471,7 +471,7 @@ export default function Dashboard() {
                     <Button
                       onClick={() => handleAnalyze('audio')}
                       disabled={isAnalyzing || !audioFile}
-                      className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
+                      className="w-full sm:w-auto"
                     >
                       {isAnalyzing ? (
                         <>
@@ -489,7 +489,7 @@ export default function Dashboard() {
                       variant="outline"
                       onClick={() => handleUseSample('audio')}
                       disabled={isAnalyzing}
-                      className="border-slate-700 text-slate-300 hover:bg-slate-800 w-full sm:w-auto"
+                      className="w-full sm:w-auto"
                     >
                       {isAnalyzing ? (
                         <>
@@ -505,18 +505,18 @@ export default function Dashboard() {
 
                 <TabsContent value="video" className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium text-slate-300 mb-2 block">
+                    <label className="text-sm font-medium text-foreground mb-2 block">
                       Upload video file for deepfake detection
                     </label>
-                    <div className="border-2 border-dashed border-slate-700 rounded-lg p-8 text-center bg-slate-800/50">
-                      <Upload className="h-12 w-12 text-slate-500 mx-auto mb-4" />
-                      <p className="text-slate-400 mb-2">Drop video files here or click to browse</p>
-                      <p className="text-sm text-slate-500">Supports .mp4, .mov, .avi files</p>
+                    <div className="border-2 border-dashed border-border rounded-lg p-8 text-center bg-card/50">
+                      <Upload className="h-12 w-12 mx-auto mb-4" />
+                      <p className="text-muted-foreground mb-2">Drop video files here or click to browse</p>
+                      <p className="text-sm text-muted-foreground">Supports .mp4, .mov, .avi files</p>
                       <Input
                         type="file"
                         accept=".mp4,.mov,.avi,video/*"
                         onChange={(e) => handleVideoFile(e.target.files?.[0] || null)}
-                        className="mt-4 bg-slate-800 border-slate-700 text-slate-300 file:bg-slate-700 file:text-slate-300 file:border-0"
+                        className="mt-4 file:border-0"
                       />
                     </div>
                   </div>
@@ -524,7 +524,7 @@ export default function Dashboard() {
                     <Button
                       onClick={() => handleAnalyze('video')}
                       disabled={isAnalyzing || !videoFile}
-                      className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
+                      className="w-full sm:w-auto"
                     >
                       {isAnalyzing ? (
                         <>
@@ -542,7 +542,7 @@ export default function Dashboard() {
                       variant="outline"
                       onClick={() => handleUseSample('video')}
                       disabled={isAnalyzing}
-                      className="border-slate-700 text-slate-300 hover:bg-slate-800 w-full sm:w-auto"
+                      className="w-full sm:w-auto"
                     >
                       {isAnalyzing ? (
                         <>
@@ -561,12 +561,12 @@ export default function Dashboard() {
 
           {/* Placeholder when no input/results yet */}
           {!results.text && !results.audio && !results.video && (
-            <Card className="bg-slate-900/50 border-slate-700 mb-6">
+            <Card className="bg-card border-border mb-6">
               <CardHeader>
-                <CardTitle className="text-white">Waiting for input</CardTitle>
+                <CardTitle>Waiting for input</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-300">
+                <p className="text-foreground">
                   Waiting for input... Please upload text, audio, or video.
                 </p>
               </CardContent>
@@ -582,9 +582,9 @@ export default function Dashboard() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                <Card className="bg-slate-900/50 border-slate-700 mb-6">
+                <Card className="bg-card border-border mb-6">
                   <CardHeader>
-                    <CardTitle className="text-white flex items-center justify-between">
+                    <CardTitle className="flex items-center justify-between">
                       <span className="flex items-center gap-2">
                         {type === 'text' && <FileText className="h-5 w-5" />}
                         {type === 'audio' && <Mic className="h-5 w-5" />}
@@ -602,20 +602,20 @@ export default function Dashboard() {
                       <div className={`text-5xl md:text-6xl font-bold ${getRiskColor(result.riskScore)} mb-2`}>
                         {result.riskScore}%
                       </div>
-                      <p className="text-slate-400">Risk Score</p>
+                      <p className="text-muted-foreground">Risk Score</p>
                     </div>
 
                     {/* Explanation */}
                     <div>
-                      <h4 className="text-white font-semibold mb-2">Analysis Summary</h4>
-                      <p className="text-slate-300">{result.explanation}</p>
+                      <h4 className="font-semibold mb-2">Analysis Summary</h4>
+                      <p className="text-foreground">{result.explanation}</p>
                     </div>
 
                     {/* Channel-specific sections */}
                     {type === 'text' && (
                       <div>
-                        <h4 className="text-white font-semibold mb-2">Message with Highlights</h4>
-                        <div className="text-slate-200 leading-relaxed">
+                        <h4 className="font-semibold mb-2">Message with Highlights</h4>
+                        <div className="leading-relaxed">
                           {highlightKeywords(textInput, suspiciousKeywords)}
                         </div>
                       </div>
@@ -623,8 +623,8 @@ export default function Dashboard() {
 
                     {type === 'audio' && result.transcript && (
                       <div>
-                        <h4 className="text-white font-semibold mb-2">Transcript</h4>
-                        <div className="text-slate-200 leading-relaxed">
+                        <h4 className="font-semibold mb-2">Transcript</h4>
+                        <div className="leading-relaxed">
                           {highlightTranscript(result.transcript, ["urgent", "suspended", "verify", "now", "penalties"])}
                         </div>
                       </div>
@@ -632,21 +632,21 @@ export default function Dashboard() {
 
                     {type === 'video' && typeof result.deepfakeLikelihood === "number" && (
                       <div>
-                        <h4 className="text-white font-semibold mb-2">Deepfake Likelihood</h4>
-                        <div className="w-full bg-slate-800 border border-slate-700 rounded h-3 overflow-hidden">
+                        <h4 className="font-semibold mb-2">Deepfake Likelihood</h4>
+                        <div className="w-full bg-muted border border-border rounded h-3 overflow-hidden">
                           <div
                             className={`h-full ${result.deepfakeLikelihood >= 70 ? "bg-red-600" : result.deepfakeLikelihood >= 40 ? "bg-yellow-500" : "bg-green-600"}`}
                             style={{ width: `${result.deepfakeLikelihood}%` }}
                           />
                         </div>
-                        <p className="mt-2 text-slate-300">{result.deepfakeLikelihood}% likelihood</p>
+                        <p className="mt-2 text-foreground">{result.deepfakeLikelihood}% likelihood</p>
                       </div>
                     )}
 
                     {/* Suspicious Elements */}
                     {result.suspiciousElements.length > 0 && (
                       <div>
-                        <h4 className="text-white font-semibold mb-2">Flagged Elements</h4>
+                        <h4 className="font-semibold mb-2">Flagged Elements</h4>
                         <div className="flex flex-wrap gap-2">
                           {result.suspiciousElements.map((element, index) => (
                             <Badge key={index} variant="outline" className="border-red-500/30 text-red-400">
@@ -660,7 +660,7 @@ export default function Dashboard() {
 
                     {/* Action Buttons */}
                     <div>
-                      <h4 className="text-white font-semibold mb-3">Take Action</h4>
+                      <h4 className="font-semibold mb-3">Take Action</h4>
                       <div className="flex flex-col sm:flex-row gap-3">
                         <Button
                           variant={result.action === 'block' ? 'default' : 'outline'}
@@ -668,8 +668,8 @@ export default function Dashboard() {
                           disabled={!!actionLoading[`${type}:block`] || isAnalyzing}
                           className={
                             (result.action === 'block'
-                              ? 'bg-red-600 hover:bg-red-700 text-white'
-                              : 'border-red-500/30 text-red-400 hover:bg-red-500/10') +
+                              ? ''
+                              : '') +
                             ' w-full sm:w-auto'
                           }
                         >
@@ -691,8 +691,8 @@ export default function Dashboard() {
                           disabled={!!actionLoading[`${type}:report`] || isAnalyzing}
                           className={
                             (result.action === 'report'
-                              ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
-                              : 'border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10') +
+                              ? ''
+                              : '') +
                             ' w-full sm:w-auto'
                           }
                         >
@@ -714,8 +714,8 @@ export default function Dashboard() {
                           disabled={!!actionLoading[`${type}:ignore`] || isAnalyzing}
                           className={
                             (result.action === 'ignore'
-                              ? 'bg-green-600 hover:bg-green-700 text-white'
-                              : 'border-green-500/30 text-green-400 hover:bg-green-500/10') +
+                              ? ''
+                              : '') +
                             ' w-full sm:w-auto'
                           }
                         >
