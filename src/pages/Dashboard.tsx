@@ -303,14 +303,14 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-card/80 backdrop-blur-md">
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-white dark:bg-card shadow-sm">
         <div className="container mx-auto px-4 py-3 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 sm:gap-4">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate("/")}
-              className="rounded-full bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600 transition-all duration-200 active:scale-95 px-4 py-2"
+              className="rounded-full bg-gray-200 text-[#111827] hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600 transition-all duration-200 active:scale-95 px-4 py-2 shadow-sm"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Home
@@ -338,7 +338,7 @@ export default function Dashboard() {
       <div className="pt-16 container mx-auto px-4 py-6">
         {/* Stats Strip */}
         <div className="mb-6">
-          <div className="bg-card border border-border rounded-xl shadow-md p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-center gap-4 text-foreground w-full">
+          <div className="bg-white dark:bg-card border border-border rounded-xl shadow-md p-6 flex flex-col sm:flex-row items-center justify-center gap-4 text-foreground w-full">
             <div className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4" />
               <span>Scams Analyzed: <span className="font-semibold">{stats.analyzed}</span></span>
@@ -354,379 +354,368 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="text-center sm:text-left mb-6">
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-1">Fraud Detection Dashboard</h1>
-            <p className="text-slate-500 dark:text-slate-300 text-base sm:text-lg">Upload content to analyze for potential scams and fraud</p>
-          </div>
+        {/* Main Detection Interface */}
+        <Card className="bg-white dark:bg-card border-border rounded-xl shadow-md mb-6 w-full">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold flex items-center gap-2">
+              <Shield className="h-5 w-5" />
+              Content Analysis
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Tabs value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="flex w-full items-center gap-2 overflow-x-auto whitespace-nowrap bg-muted p-1 rounded-md">
+                <TabsTrigger value="text" className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-md">
+                  <FileText className="h-4 w-4 mr-2" />
+                  Text
+                </TabsTrigger>
+                <TabsTrigger value="audio" className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-md">
+                  <Mic className="h-4 w-4 mr-2" />
+                  Audio
+                </TabsTrigger>
+                <TabsTrigger value="video" className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-md">
+                  <Video className="h-4 w-4 mr-2" />
+                  Video
+                </TabsTrigger>
+              </TabsList>
 
-          {/* Main Detection Interface */}
-          <Card className="bg-card border-border rounded-xl shadow-md mb-6 w-full">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                <Shield className="h-5 w-5" />
-                Content Analysis
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="flex w-full items-center gap-2 overflow-x-auto whitespace-nowrap bg-muted p-1 rounded-md">
-                  <TabsTrigger value="text" className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-md">
-                    <FileText className="h-4 w-4 mr-2" />
-                    Text
-                  </TabsTrigger>
-                  <TabsTrigger value="audio" className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-md">
-                    <Mic className="h-4 w-4 mr-2" />
-                    Audio
-                  </TabsTrigger>
-                  <TabsTrigger value="video" className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-md">
-                    <Video className="h-4 w-4 mr-2" />
-                    Video
-                  </TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="text" className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-2 block text-center sm:text-left">
-                      Paste suspicious text or upload file
-                    </label>
-                    <Textarea
-                      placeholder="Paste the suspicious message here..."
-                      value={textInput}
-                      onChange={(e) => setTextInput(e.target.value)}
-                      className="min-h-[120px] w-full"
-                    />
+              <TabsContent value="text" className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium text-foreground mb-2 block text-center sm:text-left">
+                    Paste suspicious text or upload file
+                  </label>
+                  <Textarea
+                    placeholder="Paste the suspicious message here..."
+                    value={textInput}
+                    onChange={(e) => setTextInput(e.target.value)}
+                    className="min-h-[120px] w-full placeholder:text-gray-400 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  <Input
+                    type="file"
+                    accept=".txt,.csv,text/plain"
+                    onChange={(e) => handleTextFile(e.target.files?.[0] || null)}
+                    className="file:border-0 w-full sm:w-auto border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <div className="flex flex-col sm:flex-row gap-3 w-full">
+                    <Button
+                      onClick={() => handleAnalyze('text', textInput)}
+                      disabled={isAnalyzing || !textInput.trim()}
+                      className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black"
+                    >
+                      {isAnalyzing ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Analyzing...
+                        </>
+                      ) : (
+                        <>
+                          <Shield className="h-4 w-4 mr-2" />
+                          Analyze Text
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => handleUseSample('text')}
+                      disabled={isAnalyzing}
+                      className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 hover:shadow bg-gray-100 text-[#111827] hover:bg-gray-200"
+                    >
+                      {isAnalyzing ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Loading...
+                        </>
+                      ) : (
+                        <>Use Sample Input</>
+                      )}
+                    </Button>
                   </div>
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                </div>
+              </TabsContent>
+
+              <TabsContent value="audio" className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium text-foreground mb-2 block text-center sm:text-left">
+                    Upload audio file for voice analysis
+                  </label>
+                  <div className="border-2 border-dashed border-border rounded-lg p-8 text-center bg-white/70 dark:bg-card/50">
+                    <Upload className="h-12 w-12 mx-auto mb-4" />
+                    <p className="text-muted-foreground mb-2">Drop audio files here or click to browse</p>
+                    <p className="text-sm text-muted-foreground">Supports .mp3, .wav, .m4a files</p>
                     <Input
                       type="file"
-                      accept=".txt,.csv,text/plain"
-                      onChange={(e) => handleTextFile(e.target.files?.[0] || null)}
-                      className="file:border-0 w-full sm:w-auto"
+                      accept=".mp3,.wav,.m4a,audio/*"
+                      onChange={(e) => handleAudioFile(e.target.files?.[0] || null)}
+                      className="mt-4 file:border-0 w-full sm:w-auto border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
-                    <div className="flex flex-col sm:flex-row gap-3 w-full">
-                      <Button
-                        onClick={() => handleAnalyze('text', textInput)}
-                        disabled={isAnalyzing || !textInput.trim()}
-                        className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black"
-                      >
-                        {isAnalyzing ? (
-                          <>
-                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                            Analyzing...
-                          </>
-                        ) : (
-                          <>
-                            <Shield className="h-4 w-4 mr-2" />
-                            Analyze Text
-                          </>
-                        )}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        onClick={() => handleUseSample('text')}
-                        disabled={isAnalyzing}
-                        className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 hover:shadow"
-                      >
-                        {isAnalyzing ? (
-                          <>
-                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                            Loading...
-                          </>
-                        ) : (
-                          <>Use Sample Input</>
-                        )}
-                      </Button>
-                    </div>
                   </div>
-                </TabsContent>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3 w-full">
+                  <Button
+                    onClick={() => handleAnalyze('audio')}
+                    disabled={isAnalyzing || !audioFile}
+                    className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black"
+                  >
+                    {isAnalyzing ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        Analyzing...
+                      </>
+                    ) : (
+                      <>
+                        <Mic className="h-4 w-4 mr-2" />
+                        Analyze Audio
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => handleUseSample('audio')}
+                    disabled={isAnalyzing}
+                    className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 hover:shadow bg-gray-100 text-[#111827] hover:bg-gray-200"
+                  >
+                    {isAnalyzing ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        Loading...
+                      </>
+                    ) : (
+                      <>Use Sample Input</>
+                    )}
+                  </Button>
+                </div>
+              </TabsContent>
 
-                <TabsContent value="audio" className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-2 block text-center sm:text-left">
-                      Upload audio file for voice analysis
-                    </label>
-                    <div className="border-2 border-dashed border-border rounded-lg p-8 text-center bg-card/50">
-                      <Upload className="h-12 w-12 mx-auto mb-4" />
-                      <p className="text-muted-foreground mb-2">Drop audio files here or click to browse</p>
-                      <p className="text-sm text-muted-foreground">Supports .mp3, .wav, .m4a files</p>
-                      <Input
-                        type="file"
-                        accept=".mp3,.wav,.m4a,audio/*"
-                        onChange={(e) => handleAudioFile(e.target.files?.[0] || null)}
-                        className="mt-4 file:border-0 w-full sm:w-auto"
-                      />
-                    </div>
+              <TabsContent value="video" className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium text-foreground mb-2 block text-center sm:text-left">
+                    Upload video file for deepfake detection
+                  </label>
+                  <div className="border-2 border-dashed border-border rounded-lg p-8 text-center bg-white/70 dark:bg-card/50">
+                    <Upload className="h-12 w-12 mx-auto mb-4" />
+                    <p className="text-muted-foreground mb-2">Drop video files here or click to browse</p>
+                    <p className="text-sm text-muted-foreground">Supports .mp4, .mov, .avi files</p>
+                    <Input
+                      type="file"
+                      accept=".mp4,.mov,.avi,video/*"
+                      onChange={(e) => handleVideoFile(e.target.files?.[0] || null)}
+                      className="mt-4 file:border-0 w-full sm:w-auto border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
                   </div>
-                  <div className="flex flex-col sm:flex-row gap-3 w-full">
-                    <Button
-                      onClick={() => handleAnalyze('audio')}
-                      disabled={isAnalyzing || !audioFile}
-                      className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black"
-                    >
-                      {isAnalyzing ? (
-                        <>
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                          Analyzing...
-                        </>
-                      ) : (
-                        <>
-                          <Mic className="h-4 w-4 mr-2" />
-                          Analyze Audio
-                        </>
-                      )}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => handleUseSample('audio')}
-                      disabled={isAnalyzing}
-                      className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 hover:shadow"
-                    >
-                      {isAnalyzing ? (
-                        <>
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                          Loading...
-                        </>
-                      ) : (
-                        <>Use Sample Input</>
-                      )}
-                    </Button>
-                  </div>
-                </TabsContent>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3 w-full">
+                  <Button
+                    onClick={() => handleAnalyze('video')}
+                    disabled={isAnalyzing || !videoFile}
+                    className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black"
+                  >
+                    {isAnalyzing ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        Analyzing...
+                      </>
+                    ) : (
+                      <>
+                        <Video className="h-4 w-4 mr-2" />
+                        Analyze Video
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => handleUseSample('video')}
+                    disabled={isAnalyzing}
+                    className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 hover:shadow bg-gray-100 text-[#111827] hover:bg-gray-200"
+                  >
+                    {isAnalyzing ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        Loading...
+                      </>
+                    ) : (
+                      <>Use Sample Input</>
+                    )}
+                  </Button>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
 
-                <TabsContent value="video" className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-2 block text-center sm:text-left">
-                      Upload video file for deepfake detection
-                    </label>
-                    <div className="border-2 border-dashed border-border rounded-lg p-8 text-center bg-card/50">
-                      <Upload className="h-12 w-12 mx-auto mb-4" />
-                      <p className="text-muted-foreground mb-2">Drop video files here or click to browse</p>
-                      <p className="text-sm text-muted-foreground">Supports .mp4, .mov, .avi files</p>
-                      <Input
-                        type="file"
-                        accept=".mp4,.mov,.avi,video/*"
-                        onChange={(e) => handleVideoFile(e.target.files?.[0] || null)}
-                        className="mt-4 file:border-0 w-full sm:w-auto"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-3 w-full">
-                    <Button
-                      onClick={() => handleAnalyze('video')}
-                      disabled={isAnalyzing || !videoFile}
-                      className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black"
-                    >
-                      {isAnalyzing ? (
-                        <>
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                          Analyzing...
-                        </>
-                      ) : (
-                        <>
-                          <Video className="h-4 w-4 mr-2" />
-                          Analyze Video
-                        </>
-                      )}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => handleUseSample('video')}
-                      disabled={isAnalyzing}
-                      className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 hover:shadow"
-                    >
-                      {isAnalyzing ? (
-                        <>
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                          Loading...
-                        </>
-                      ) : (
-                        <>Use Sample Input</>
-                      )}
-                    </Button>
-                  </div>
-                </TabsContent>
-              </Tabs>
+        {/* Placeholder when no input/results yet */}
+        {!results.text && !results.audio && !results.video && (
+          <Card className="bg-white dark:bg-card border-border rounded-xl shadow-md mb-6 w-full">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-center sm:text-left">Waiting for input</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-foreground text-center sm:text-left">
+                Waiting for input... Please upload text, audio, or video.
+              </p>
             </CardContent>
           </Card>
+        )}
 
-          {/* Placeholder when no input/results yet */}
-          {!results.text && !results.audio && !results.video && (
-            <Card className="bg-card border-border rounded-xl shadow-md mb-6 w-full">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold text-center sm:text-left">Waiting for input</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-foreground text-center sm:text-left">
-                  Waiting for input... Please upload text, audio, or video.
-                </p>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Results Section */}
-          {Object.entries(results).map(([type, result]) => (
-            result && (
-              <motion.div
-                key={type}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Card className="bg-card border-border rounded-xl shadow-md mb-6">
-                  <CardHeader>
-                    <CardTitle className="text-lg font-semibold flex items-center justify-between">
-                      <span className="flex items-center gap-2">
-                        {type === 'text' && <FileText className="h-5 w-5" />}
-                        {type === 'audio' && <Mic className="h-5 w-5" />}
-                        {type === 'video' && <Video className="h-5 w-5" />}
-                        {type.charAt(0).toUpperCase() + type.slice(1)} Analysis Results
-                      </span>
-                      <Badge className={getRiskBadgeColor(result.riskScore)}>
-                        {result.riskScore >= 70 ? 'High Risk' : result.riskScore >= 40 ? 'Medium Risk' : 'Low Risk'}
-                      </Badge>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    {/* Risk Score */}
-                    <div className="text-center">
-                      <div className={`text-5xl md:text-6xl font-bold ${getRiskColor(result.riskScore)} mb-2`}>
-                        {result.riskScore}%
-                      </div>
-                      <p className="text-muted-foreground">Risk Score</p>
+        {/* Results Section */}
+        {Object.entries(results).map(([type, result]) => (
+          result && (
+            <motion.div
+              key={type}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Card className="bg-white dark:bg-card border-border rounded-xl shadow-md mb-6">
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold flex items-center justify-between">
+                    <span className="flex items-center gap-2">
+                      {type === 'text' && <FileText className="h-5 w-5" />}
+                      {type === 'audio' && <Mic className="h-5 w-5" />}
+                      {type === 'video' && <Video className="h-5 w-5" />}
+                      {type.charAt(0).toUpperCase() + type.slice(1)} Analysis Results
+                    </span>
+                    <Badge className={getRiskBadgeColor(result.riskScore)}>
+                      {result.riskScore >= 70 ? 'High Risk' : result.riskScore >= 40 ? 'Medium Risk' : 'Low Risk'}
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Risk Score */}
+                  <div className="text-center">
+                    <div className={`text-5xl md:text-6xl font-bold ${getRiskColor(result.riskScore)} mb-2`}>
+                      {result.riskScore}%
                     </div>
+                    <p className="text-muted-foreground">Risk Score</p>
+                  </div>
 
-                    {/* Explanation */}
+                  {/* Explanation */}
+                  <div>
+                    <h4 className="font-semibold mb-2">Analysis Summary</h4>
+                    <p className="text-foreground">{result.explanation}</p>
+                  </div>
+
+                  {/* Channel-specific sections */}
+                  {type === 'text' && (
                     <div>
-                      <h4 className="font-semibold mb-2">Analysis Summary</h4>
-                      <p className="text-foreground">{result.explanation}</p>
+                      <h4 className="font-semibold mb-2">Message with Highlights</h4>
+                      <div className="leading-relaxed">
+                        {highlightKeywords(textInput, suspiciousKeywords)}
+                      </div>
                     </div>
+                  )}
 
-                    {/* Channel-specific sections */}
-                    {type === 'text' && (
-                      <div>
-                        <h4 className="font-semibold mb-2">Message with Highlights</h4>
-                        <div className="leading-relaxed">
-                          {highlightKeywords(textInput, suspiciousKeywords)}
-                        </div>
-                      </div>
-                    )}
-
-                    {type === 'audio' && result.transcript && (
-                      <div>
-                        <h4 className="font-semibold mb-2">Transcript</h4>
-                        <div className="leading-relaxed">
-                          {highlightTranscript(result.transcript, ["urgent", "suspended", "verify", "now", "penalties"])}
-                        </div>
-                      </div>
-                    )}
-
-                    {type === 'video' && typeof result.deepfakeLikelihood === "number" && (
-                      <div>
-                        <h4 className="font-semibold mb-2">Deepfake Likelihood</h4>
-                        <div className="w-full bg-muted border border-border rounded h-3 overflow-hidden">
-                          <div
-                            className={`h-full ${result.deepfakeLikelihood >= 70 ? "bg-red-600" : result.deepfakeLikelihood >= 40 ? "bg-yellow-500" : "bg-green-600"}`}
-                            style={{ width: `${result.deepfakeLikelihood}%` }}
-                          />
-                        </div>
-                        <p className="mt-2 text-foreground">{result.deepfakeLikelihood}% likelihood</p>
-                      </div>
-                    )}
-
-                    {/* Suspicious Elements */}
-                    {result.suspiciousElements.length > 0 && (
-                      <div>
-                        <h4 className="font-semibold mb-2">Flagged Elements</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {result.suspiciousElements.map((element, index) => (
-                            <Badge key={index} variant="outline" className="border-red-500/30 text-red-400">
-                              <AlertTriangle className="h-3 w-3 mr-1" />
-                              {element}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Action Buttons */}
+                  {type === 'audio' && result.transcript && (
                     <div>
-                      <h4 className="font-semibold mb-3">Take Action</h4>
-                      <div className="flex flex-col sm:flex-row gap-3">
-                        <Button
-                          variant={result.action === 'block' ? 'default' : 'outline'}
-                          onClick={() => handleAction(type as any, 'block')}
-                          disabled={!!actionLoading[`${type}:block`] || isAnalyzing}
-                          className={' w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black'}
-                        >
-                          {actionLoading[`${type}:block`] ? (
-                            <>
-                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                              Processing...
-                            </>
-                          ) : (
-                            <>
-                              <X className="h-4 w-4 mr-2" />
-                              Block
-                            </>
-                          )}
-                        </Button>
-                        <Button
-                          variant={result.action === 'report' ? 'default' : 'outline'}
-                          onClick={() => handleAction(type as any, 'report')}
-                          disabled={!!actionLoading[`${type}:report`] || isAnalyzing}
-                          className={' w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black'}
-                        >
-                          {actionLoading[`${type}:report`] ? (
-                            <>
-                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                              Processing...
-                            </>
-                          ) : (
-                            <>
-                              <Flag className="h-4 w-4 mr-2" />
-                              Report
-                            </>
-                          )}
-                        </Button>
-                        <Button
-                          variant={result.action === 'ignore' ? 'default' : 'outline'}
-                          onClick={() => handleAction(type as any, 'ignore')}
-                          disabled={!!actionLoading[`${type}:ignore`] || isAnalyzing}
-                          className={' w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black'}
-                        >
-                          {actionLoading[`${type}:ignore`] ? (
-                            <>
-                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                              Processing...
-                            </>
-                          ) : (
-                            <>
-                              <Check className="h-4 w-4 mr-2" />
-                              Ignore
-                            </>
-                          )}
-                        </Button>
+                      <h4 className="font-semibold mb-2">Transcript</h4>
+                      <div className="leading-relaxed">
+                        {highlightTranscript(result.transcript, ["urgent", "suspended", "verify", "now", "penalties"])}
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )
-          ))}
-        </motion.div>
+                  )}
 
-        {/* Footer */}
-        <footer className="mt-8 py-6 text-center">
-          <p className="text-xs text-muted-foreground">
-            Prototype for Hackathon – Not production-ready
-          </p>
-        </footer>
-      </div>
+                  {type === 'video' && typeof result.deepfakeLikelihood === "number" && (
+                    <div>
+                      <h4 className="font-semibold mb-2">Deepfake Likelihood</h4>
+                      <div className="w-full bg-muted border border-border rounded h-3 overflow-hidden">
+                        <div
+                          className={`h-full ${result.deepfakeLikelihood >= 70 ? "bg-red-600" : result.deepfakeLikelihood >= 40 ? "bg-yellow-500" : "bg-green-600"}`}
+                          style={{ width: `${result.deepfakeLikelihood}%` }}
+                        />
+                      </div>
+                      <p className="mt-2 text-foreground">{result.deepfakeLikelihood}% likelihood</p>
+                    </div>
+                  )}
+
+                  {/* Suspicious Elements */}
+                  {result.suspiciousElements.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2">Flagged Elements</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {result.suspiciousElements.map((element, index) => (
+                          <Badge key={index} variant="outline" className="border-red-500/30 text-red-400">
+                            <AlertTriangle className="h-3 w-3 mr-1" />
+                            {element}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Action Buttons */}
+                  <div>
+                    <h4 className="font-semibold mb-3">Take Action</h4>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <Button
+                        variant={result.action === 'block' ? 'default' : 'outline'}
+                        onClick={() => handleAction(type as any, 'block')}
+                        disabled={!!actionLoading[`${type}:block`] || isAnalyzing}
+                        className={' w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black'}
+                      >
+                        {actionLoading[`${type}:block`] ? (
+                          <>
+                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            Processing...
+                          </>
+                        ) : (
+                          <>
+                            <X className="h-4 w-4 mr-2" />
+                            Block
+                          </>
+                        )}
+                      </Button>
+                      <Button
+                        variant={result.action === 'report' ? 'default' : 'outline'}
+                        onClick={() => handleAction(type as any, 'report')}
+                        disabled={!!actionLoading[`${type}:report`] || isAnalyzing}
+                        className={' w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black'}
+                      >
+                        {actionLoading[`${type}:report`] ? (
+                          <>
+                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            Processing...
+                          </>
+                        ) : (
+                          <>
+                            <Flag className="h-4 w-4 mr-2" />
+                            Report
+                          </>
+                        )}
+                      </Button>
+                      <Button
+                        variant={result.action === 'ignore' ? 'default' : 'outline'}
+                        onClick={() => handleAction(type as any, 'ignore')}
+                        disabled={!!actionLoading[`${type}:ignore`] || isAnalyzing}
+                        className={' w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black'}
+                      >
+                        {actionLoading[`${type}:ignore`] ? (
+                          <>
+                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            Processing...
+                          </>
+                        ) : (
+                          <>
+                            <Check className="h-4 w-4 mr-2" />
+                            Ignore
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )
+        ))}
+
+      {/* Footer */}
+      <footer className="mt-8 py-6 text-center bg-white dark:bg-transparent">
+        <p className="text-xs text-muted-foreground">
+          Prototype for Hackathon – Not production-ready
+        </p>
+      </footer>
     </div>
+  </div>
   );
 }

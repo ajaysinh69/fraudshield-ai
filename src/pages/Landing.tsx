@@ -80,7 +80,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
-      <nav className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+      <nav className="sticky top-0 z-50 bg-white dark:bg-card border-b border-border shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <motion.div 
             className="flex items-center gap-2 cursor-pointer"
@@ -94,8 +94,8 @@ export default function Landing() {
           
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" className="min-h-11">Features</Button>
-            <Button variant="ghost" className="min-h-11">About</Button>
+            <Button variant="ghost" className="min-h-11 text-slate-700 dark:text-foreground hover:underline">Features</Button>
+            <Button variant="ghost" className="min-h-11 text-slate-700 dark:text-foreground hover:underline">About</Button>
             <ThemeToggle />
             <Button onClick={handleGetStarted} disabled={isLoading} className="min-h-11">
               {isAuthenticated ? "Dashboard" : "Get Started"}
@@ -135,19 +135,19 @@ export default function Landing() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -40, opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className="relative bg-card/95 backdrop-blur-md border-b border-border pt-4"
+              className="relative bg-white dark:bg-card/95 backdrop-blur-md border-b border-border pt-4 shadow-sm"
             >
               <div className="px-4 pb-6 flex flex-col gap-4">
                 <Button
                   variant="ghost"
-                  className="justify-start min-h-11 w-full text-lg py-4"
+                  className="justify-start min-h-11 w-full text-lg py-4 hover:underline text-slate-700 dark:text-foreground"
                   onClick={() => setMenuOpen(false)}
                 >
                   Features
                 </Button>
                 <Button
                   variant="ghost"
-                  className="justify-start min-h-11 w-full text-lg py-4"
+                  className="justify-start min-h-11 w-full text-lg py-4 hover:underline text-slate-700 dark:text-foreground"
                   onClick={() => setMenuOpen(false)}
                 >
                   About
