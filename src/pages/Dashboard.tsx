@@ -46,6 +46,7 @@ export default function Dashboard() {
     audio?: DetectionResult;
     video?: DetectionResult;
   }>({});
+  const [actionLoading, setActionLoading] = useState<Record<string, boolean>>({});
 
   // Dynamic demo stats
   const [stats, setStats] = useState({ analyzed: 0, blocked: 0, users: 0 });
@@ -224,7 +225,13 @@ export default function Dashboard() {
     toast("Video file ready. Click Analyze Video to proceed.");
   };
 
-  const handleAction = (type: 'text' | 'audio' | 'video', action: 'block' | 'report' | 'ignore') => {
+  const handleAction = async (type: 'text' | 'audio' | 'video', action: 'block' | 'report' | 'ignore') => {
+    const key = `${type}:${action}`;
+    setActionLoading((prev) => ({ ...prev, [key]: true }));
+
+    // Simulate short processing delay for visual feedback
+    await new Promise((r) => setTimeout(r, 600));
+
     setResults(prev => ({
       ...prev,
       [type]: prev[type] ? { ...prev[type]!, action } : undefined
@@ -236,6 +243,7 @@ export default function Dashboard() {
       ignore: "Content marked as safe"
     };
     
+    setActionLoading((prev) => ({ ...prev, [key]: false }));
     toast.success(actionMessages[action]);
   };
 
@@ -391,7 +399,14 @@ export default function Dashboard() {
                         disabled={isAnalyzing}
                         className="border-slate-700 text-slate-300 hover:bg-slate-800 w-full sm:w-auto"
                       >
-                        Use Sample Input
+                        {isAnalyzing ? (
+                          <>
+                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            Loading...
+                          </>
+                        ) : (
+                          <>Use Sample Input</>
+                        )}
                       </Button>
                     </div>
                   </div>
@@ -438,7 +453,14 @@ export default function Dashboard() {
                       disabled={isAnalyzing}
                       className="border-slate-700 text-slate-300 hover:bg-slate-800 w-full sm:w-auto"
                     >
-                      Use Sample Input
+                      {isAnalyzing ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Loading...
+                        </>
+                      ) : (
+                        <>Use Sample Input</>
+                      )}
                     </Button>
                   </div>
                 </TabsContent>
@@ -484,7 +506,14 @@ export default function Dashboard() {
                       disabled={isAnalyzing}
                       className="border-slate-700 text-slate-300 hover:bg-slate-800 w-full sm:w-auto"
                     >
-                      Use Sample Input
+                      {isAnalyzing ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Loading...
+                        </>
+                      ) : (
+                        <>Use Sample Input</>
+                      )}
                     </Button>
                   </div>
                 </TabsContent>
@@ -584,6 +613,7 @@ export default function Dashboard() {
                         <Button
                           variant={result.action === 'block' ? 'default' : 'outline'}
                           onClick={() => handleAction(type as any, 'block')}
+                          disabled={!!actionLoading[`${type}:block`] || isAnalyzing}
                           className={
                             (result.action === 'block'
                               ? 'bg-red-600 hover:bg-red-700 text-white'
@@ -591,12 +621,22 @@ export default function Dashboard() {
                             ' w-full sm:w-auto'
                           }
                         >
-                          <X className="h-4 w-4 mr-2" />
-                          Block
+                          {actionLoading[`${type}:block`] ? (
+                            <>
+                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                              Processing...
+                            </>
+                          ) : (
+                            <>
+                              <X className="h-4 w-4 mr-2" />
+                              Block
+                            </>
+                          )}
                         </Button>
                         <Button
                           variant={result.action === 'report' ? 'default' : 'outline'}
                           onClick={() => handleAction(type as any, 'report')}
+                          disabled={!!actionLoading[`${type}:report`] || isAnalyzing}
                           className={
                             (result.action === 'report'
                               ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
@@ -604,12 +644,22 @@ export default function Dashboard() {
                             ' w-full sm:w-auto'
                           }
                         >
-                          <Flag className="h-4 w-4 mr-2" />
-                          Report
+                          {actionLoading[`${type}:report`] ? (
+                            <>
+                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                              Processing...
+                            </>
+                          ) : (
+                            <>
+                              <Flag className="h-4 w-4 mr-2" />
+                              Report
+                            </>
+                          )}
                         </Button>
                         <Button
                           variant={result.action === 'ignore' ? 'default' : 'outline'}
                           onClick={() => handleAction(type as any, 'ignore')}
+                          disabled={!!actionLoading[`${type}:ignore`] || isAnalyzing}
                           className={
                             (result.action === 'ignore'
                               ? 'bg-green-600 hover:bg-green-700 text-white'
@@ -617,8 +667,17 @@ export default function Dashboard() {
                             ' w-full sm:w-auto'
                           }
                         >
-                          <Check className="h-4 w-4 mr-2" />
-                          Ignore
+                          {actionLoading[`${type}:ignore`] ? (
+                            <>
+                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                              Processing...
+                            </>
+                          ) : (
+                            <>
+                              <Check className="h-4 w-4 mr-2" />
+                              Ignore
+                            </>
+                          )}
                         </Button>
                       </div>
                     </div>
