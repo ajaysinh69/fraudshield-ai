@@ -304,7 +304,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="container mx-auto px-4 py-4 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 sm:gap-4">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
@@ -317,11 +317,11 @@ export default function Dashboard() {
             </Button>
             <div className="flex items-center gap-2">
               <Shield className="h-6 w-6" />
-              <span className="text-xl font-bold">FraudShield AI</span>
+              <span className="text-lg sm:text-xl font-bold">FraudShield AI</span>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <ThemeToggle />
+          <div className="flex items-center gap-3 sm:gap-4">
+            <ThemeToggle className="scale-90 sm:scale-100" />
             {user && (
               <span className="hidden sm:block text-muted-foreground">
                 Welcome, {user.name || user.email || "User"}
