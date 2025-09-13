@@ -16,14 +16,18 @@ import {
   Github,
   Twitter,
   Mail,
-  Upload
+  Upload,
+  Menu,
+  X,
 } from "lucide-react";
 import { useNavigate } from "react-router";
+import { useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Landing() {
   const { isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleGetStarted = () => {
     if (isAuthenticated) {
@@ -76,20 +80,60 @@ export default function Landing() {
             <span className="text-xl font-bold">FraudShield AI</span>
           </motion.div>
           
-          <div className="flex items-center gap-4">
-            <Button variant="ghost">
-              Features
-            </Button>
-            <Button variant="ghost">
-              About
-            </Button>
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-4">
+            <Button variant="ghost" className="min-h-11">Features</Button>
+            <Button variant="ghost" className="min-h-11">About</Button>
             <ThemeToggle />
-            <Button onClick={handleGetStarted} disabled={isLoading}>
+            <Button onClick={handleGetStarted} disabled={isLoading} className="min-h-11">
               {isAuthenticated ? "Dashboard" : "Get Started"}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
+
+          {/* Mobile actions */}
+          <div className="flex md:hidden items-center gap-2">
+            <ThemeToggle />
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-10 w-10"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          </div>
         </div>
+
+        {/* Mobile menu panel */}
+        {menuOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden border-t border-border bg-card/80 backdrop-blur-sm"
+          >
+            <div className="container mx-auto px-4 py-3 flex flex-col gap-2">
+              <Button variant="ghost" className="justify-start min-h-11" onClick={() => setMenuOpen(false)}>
+                Features
+              </Button>
+              <Button variant="ghost" className="justify-start min-h-11" onClick={() => setMenuOpen(false)}>
+                About
+              </Button>
+              <Button
+                onClick={() => { setMenuOpen(false); handleGetStarted(); }}
+                disabled={isLoading}
+                className="min-h-11"
+              >
+                {isAuthenticated ? "Dashboard" : "Get Started"}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </motion.div>
+        )}
       </nav>
 
       {/* Hero Section */}
