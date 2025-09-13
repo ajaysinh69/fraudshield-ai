@@ -374,21 +374,21 @@ export default function Dashboard() {
               <TabsList className="relative grid grid-cols-3 w-full items-center overflow-hidden bg-muted p-0 rounded-md">
                 <TabsTrigger
                   value="text"
-                  className="w-full justify-center px-4 py-2 rounded-md transition-colors font-medium text-slate-700 dark:text-slate-300 data-[state=active]:bg-slate-200 dark:data-[state=active]:bg-slate-800 data-[state=active]:text-slate-900 dark:data-[state=active]:text-white"
+                  className="w-full justify-center px-4 py-2 rounded-md transition-colors font-medium text-slate-700 dark:text-slate-300 data-[state=active]:bg-blue-600 dark:data-[state=active]:bg-blue-500 data-[state=active]:text-white dark:data-[state=active]:text-white"
                 >
                   <FileText className="h-4 w-4 mr-2" />
                   Text
                 </TabsTrigger>
                 <TabsTrigger
                   value="audio"
-                  className="w-full justify-center px-4 py-2 rounded-md transition-colors font-medium text-slate-700 dark:text-slate-300 data-[state=active]:bg-slate-200 dark:data-[state=active]:bg-slate-800 data-[state=active]:text-slate-900 dark:data-[state=active]:text-white"
+                  className="w-full justify-center px-4 py-2 rounded-md transition-colors font-medium text-slate-700 dark:text-slate-300 data-[state=active]:bg-blue-600 dark:data-[state=active]:bg-blue-500 data-[state=active]:text-white dark:data-[state=active]:text-white"
                 >
                   <Mic className="h-4 w-4 mr-2" />
                   Audio
                 </TabsTrigger>
                 <TabsTrigger
                   value="video"
-                  className="w-full justify-center px-4 py-2 rounded-md transition-colors font-medium text-slate-700 dark:text-slate-300 data-[state=active]:bg-slate-200 dark:data-[state=active]:bg-slate-800 data-[state=active]:text-slate-900 dark:data-[state=active]:text-white"
+                  className="w-full justify-center px-4 py-2 rounded-md transition-colors font-medium text-slate-700 dark:text-slate-300 data-[state=active]:bg-blue-600 dark:data-[state=active]:bg-blue-500 data-[state=active]:text-white dark:data-[state=active]:text-white"
                 >
                   <Video className="h-4 w-4 mr-2" />
                   Video
