@@ -80,7 +80,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white dark:bg-card border-b border-border shadow-sm">
+      <nav className="sticky top-0 z-50 bg-white dark:bg-card border-b border-border shadow-sm transition-colors duration-300">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <motion.div 
             className="flex items-center gap-2 cursor-pointer"
@@ -169,8 +169,8 @@ export default function Landing() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-slate-100 to-red-100 dark:from-blue-900/20 dark:via-slate-950 dark:to-red-900/20" />
+      <section className="relative overflow-hidden transition-colors duration-300">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-slate-100 to-red-100 dark:from-blue-900/30 dark:via-slate-900 dark:to-red-900/30" />
         <div className="container mx-auto px-4 py-24 relative">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -219,7 +219,7 @@ export default function Landing() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 border-y border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/30">
+      <section className="py-16 border-y border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 transition-colors duration-300">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -243,7 +243,7 @@ export default function Landing() {
       </section>
 
       {/* Features Section */}
-      <section className="py-24">
+      <section className="py-24 transition-colors duration-300">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -290,7 +290,7 @@ export default function Landing() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-24 bg-slate-50 dark:bg-slate-900/30">
+      <section className="py-24 bg-slate-50 dark:bg-slate-900/40 transition-colors duration-300">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -346,7 +346,7 @@ export default function Landing() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24">
+      <section className="py-24 transition-colors duration-300">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -373,7 +373,7 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 py-12">
+      <footer className="border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 py-12 transition-colors duration-300">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
