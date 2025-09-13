@@ -137,14 +137,6 @@ export default function Landing() {
                 <Shield className="mr-2 h-5 w-5" />
                 Try Demo
               </Button>
-              <Button 
-                size="lg"
-                variant="outline"
-                className="border-slate-600 text-slate-300 hover:bg-slate-800 px-8 py-4 text-lg"
-              >
-                <Eye className="mr-2 h-5 w-5" />
-                Watch Demo
-              </Button>
             </motion.div>
           </motion.div>
         </div>
