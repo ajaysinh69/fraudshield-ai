@@ -110,23 +110,23 @@ export default function Landing() {
         {/* Mobile menu panel */}
         {menuOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -20, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden border-t border-border bg-card/80 backdrop-blur-sm"
+            className="md:hidden fixed top-[64px] inset-x-0 bottom-0 border-t border-border bg-card/90 backdrop-blur-sm z-40"
           >
-            <div className="container mx-auto px-4 py-3 flex flex-col gap-2">
-              <Button variant="ghost" className="justify-start min-h-11" onClick={() => setMenuOpen(false)}>
+            <div className="h-full overflow-y-auto px-4 py-6 flex flex-col gap-4">
+              <Button variant="ghost" className="justify-start min-h-11 w-full text-lg py-4" onClick={() => setMenuOpen(false)}>
                 Features
               </Button>
-              <Button variant="ghost" className="justify-start min-h-11" onClick={() => setMenuOpen(false)}>
+              <Button variant="ghost" className="justify-start min-h-11 w-full text-lg py-4" onClick={() => setMenuOpen(false)}>
                 About
               </Button>
               <Button
                 onClick={() => { setMenuOpen(false); handleGetStarted(); }}
                 disabled={isLoading}
-                className="min-h-11"
+                className="min-h-11 w-full text-lg py-4"
               >
                 {isAuthenticated ? "Dashboard" : "Get Started"}
                 <ArrowRight className="ml-2 h-4 w-4" />

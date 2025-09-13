@@ -23,17 +23,16 @@ export default function ThemeToggle({ className = "" }: { className?: string }) 
       className={[
         "relative inline-flex h-8 w-16 items-center rounded-full p-1 transition-all duration-300",
         "focus:outline-none focus:ring-2 focus:ring-ring/60",
-        "hover:shadow-[0_0_18px_rgba(255,255,255,0.25)] dark:hover:shadow-[0_0_22px_rgba(93,63,211,0.45)]",
         dark
-          ? "bg-gradient-to-r from-indigo-600 to-purple-700"
-          : "bg-gradient-to-r from-yellow-300 to-amber-500",
+          ? "bg-gradient-to-r from-[#6d28d9] to-[#3b82f6] hover:shadow-[0_0_24px_rgba(59,130,246,0.55)]"
+          : "bg-gradient-to-r from-[#facc15] to-[#fde68a] hover:shadow-[0_0_24px_rgba(234,179,8,0.55)]",
         className,
       ].join(" ")}
     >
       <motion.div
         className="absolute inset-0 rounded-full"
         initial={false}
-        animate={{ boxShadow: dark ? "0 0 24px rgba(93,63,211,0.5)" : "0 0 24px rgba(255,193,7,0.5)" }}
+        animate={{ boxShadow: dark ? "0 0 28px rgba(59,130,246,0.50)" : "0 0 28px rgba(234,179,8,0.50)" }}
         transition={{ duration: 0.35 }}
         aria-hidden
       />

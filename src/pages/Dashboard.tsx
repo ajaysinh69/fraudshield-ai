@@ -327,7 +327,7 @@ export default function Dashboard() {
                 Welcome, {user.name || user.email || "User"}
               </span>
             )}
-            <Button variant="outline" onClick={signOut} className="">
+            <Button variant="outline" onClick={signOut} className="min-h-11">
               Sign Out
             </Button>
           </div>
@@ -358,13 +358,13 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Fraud Detection Dashboard</h1>
-            <p className="text-slate-400">Upload content to analyze for potential scams and fraud</p>
+          <div className="text-center sm:text-left mb-8 transition-all duration-300">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Fraud Detection Dashboard</h1>
+            <p className="text-slate-400 text-base sm:text-lg">Upload content to analyze for potential scams and fraud</p>
           </div>
 
           {/* Main Detection Interface */}
-          <Card className="bg-card border-border mb-8">
+          <Card className="bg-card border-border mb-8 w-full">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Shield className="h-5 w-5" />
@@ -373,7 +373,6 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <Tabs value={activeTab} onValueChange={setActiveTab}>
-                {/* Make tab triggers in a single horizontal row with scroll on small screens */}
                 <TabsList className="flex w-full items-center gap-2 overflow-x-auto whitespace-nowrap bg-muted p-1 rounded-md">
                   <TabsTrigger value="text" className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-md">
                     <FileText className="h-4 w-4 mr-2" />
@@ -391,14 +390,14 @@ export default function Dashboard() {
 
                 <TabsContent value="text" className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium text-foreground mb-2 block">
+                    <label className="text-sm font-medium text-foreground mb-2 block text-center sm:text-left">
                       Paste suspicious text or upload file
                     </label>
                     <Textarea
                       placeholder="Paste the suspicious message here..."
                       value={textInput}
                       onChange={(e) => setTextInput(e.target.value)}
-                      className="min-h-[120px]"
+                      className="min-h-[120px] w-full"
                     />
                   </div>
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
@@ -406,13 +405,13 @@ export default function Dashboard() {
                       type="file"
                       accept=".txt,.csv,text/plain"
                       onChange={(e) => handleTextFile(e.target.files?.[0] || null)}
-                      className="file:border-0"
+                      className="file:border-0 w-full sm:w-auto"
                     />
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3 w-full">
                       <Button
                         onClick={() => handleAnalyze('text', textInput)}
                         disabled={isAnalyzing || !textInput.trim()}
-                        className="w-full sm:w-auto"
+                        className="w-full sm:w-auto min-h-11"
                       >
                         {isAnalyzing ? (
                           <>
@@ -430,7 +429,7 @@ export default function Dashboard() {
                         variant="outline"
                         onClick={() => handleUseSample('text')}
                         disabled={isAnalyzing}
-                        className="w-full sm:w-auto"
+                        className="w-full sm:w-auto min-h-11"
                       >
                         {isAnalyzing ? (
                           <>
@@ -447,7 +446,7 @@ export default function Dashboard() {
 
                 <TabsContent value="audio" className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium text-foreground mb-2 block">
+                    <label className="text-sm font-medium text-foreground mb-2 block text-center sm:text-left">
                       Upload audio file for voice analysis
                     </label>
                     <div className="border-2 border-dashed border-border rounded-lg p-8 text-center bg-card/50">
@@ -458,15 +457,15 @@ export default function Dashboard() {
                         type="file"
                         accept=".mp3,.wav,.m4a,audio/*"
                         onChange={(e) => handleAudioFile(e.target.files?.[0] || null)}
-                        className="mt-4 file:border-0"
+                        className="mt-4 file:border-0 w-full sm:w-auto"
                       />
                     </div>
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex flex-col sm:flex-row gap-3 w-full">
                     <Button
                       onClick={() => handleAnalyze('audio')}
                       disabled={isAnalyzing || !audioFile}
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto min-h-11"
                     >
                       {isAnalyzing ? (
                         <>
@@ -484,7 +483,7 @@ export default function Dashboard() {
                       variant="outline"
                       onClick={() => handleUseSample('audio')}
                       disabled={isAnalyzing}
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto min-h-11"
                     >
                       {isAnalyzing ? (
                         <>
@@ -500,7 +499,7 @@ export default function Dashboard() {
 
                 <TabsContent value="video" className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium text-foreground mb-2 block">
+                    <label className="text-sm font-medium text-foreground mb-2 block text-center sm:text-left">
                       Upload video file for deepfake detection
                     </label>
                     <div className="border-2 border-dashed border-border rounded-lg p-8 text-center bg-card/50">
@@ -511,15 +510,15 @@ export default function Dashboard() {
                         type="file"
                         accept=".mp4,.mov,.avi,video/*"
                         onChange={(e) => handleVideoFile(e.target.files?.[0] || null)}
-                        className="mt-4 file:border-0"
+                        className="mt-4 file:border-0 w-full sm:w-auto"
                       />
                     </div>
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex flex-col sm:flex-row gap-3 w-full">
                     <Button
                       onClick={() => handleAnalyze('video')}
                       disabled={isAnalyzing || !videoFile}
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto min-h-11"
                     >
                       {isAnalyzing ? (
                         <>
@@ -537,7 +536,7 @@ export default function Dashboard() {
                       variant="outline"
                       onClick={() => handleUseSample('video')}
                       disabled={isAnalyzing}
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto min-h-11"
                     >
                       {isAnalyzing ? (
                         <>
@@ -556,12 +555,12 @@ export default function Dashboard() {
 
           {/* Placeholder when no input/results yet */}
           {!results.text && !results.audio && !results.video && (
-            <Card className="bg-card border-border mb-6">
+            <Card className="bg-card border-border mb-6 w-full">
               <CardHeader>
-                <CardTitle>Waiting for input</CardTitle>
+                <CardTitle className="text-center sm:text-left">Waiting for input</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-foreground">
+                <p className="text-foreground text-center sm:text-left">
                   Waiting for input... Please upload text, audio, or video.
                 </p>
               </CardContent>
@@ -661,12 +660,7 @@ export default function Dashboard() {
                           variant={result.action === 'block' ? 'default' : 'outline'}
                           onClick={() => handleAction(type as any, 'block')}
                           disabled={!!actionLoading[`${type}:block`] || isAnalyzing}
-                          className={
-                            (result.action === 'block'
-                              ? ''
-                              : '') +
-                            ' w-full sm:w-auto'
-                          }
+                          className={' w-full sm:w-auto min-h-11'}
                         >
                           {actionLoading[`${type}:block`] ? (
                             <>
@@ -684,12 +678,7 @@ export default function Dashboard() {
                           variant={result.action === 'report' ? 'default' : 'outline'}
                           onClick={() => handleAction(type as any, 'report')}
                           disabled={!!actionLoading[`${type}:report`] || isAnalyzing}
-                          className={
-                            (result.action === 'report'
-                              ? ''
-                              : '') +
-                            ' w-full sm:w-auto'
-                          }
+                          className={' w-full sm:w-auto min-h-11'}
                         >
                           {actionLoading[`${type}:report`] ? (
                             <>
@@ -707,12 +696,7 @@ export default function Dashboard() {
                           variant={result.action === 'ignore' ? 'default' : 'outline'}
                           onClick={() => handleAction(type as any, 'ignore')}
                           disabled={!!actionLoading[`${type}:ignore`] || isAnalyzing}
-                          className={
-                            (result.action === 'ignore'
-                              ? ''
-                              : '') +
-                            ' w-full sm:w-auto'
-                          }
+                          className={' w-full sm:w-auto min-h-11'}
                         >
                           {actionLoading[`${type}:ignore`] ? (
                             <>
