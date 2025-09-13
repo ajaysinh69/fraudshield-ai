@@ -47,6 +47,8 @@ export default function Dashboard() {
     video?: DetectionResult;
   }>({});
   const [actionLoading, setActionLoading] = useState<Record<string, boolean>>({});
+  const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [videoFile, setVideoFile] = useState<File | null>(null);
 
   // Dynamic demo stats
   const [stats, setStats] = useState({ analyzed: 0, blocked: 0, users: 0 });
@@ -176,26 +178,38 @@ export default function Dashboard() {
   const handleAnalyze = async (type: 'text' | 'audio' | 'video', data?: string) => {
     setIsAnalyzing(true);
     try {
-      let result: DetectionResult;
+      let result: DetectionResult | undefined;
       switch (type) {
         case 'text':
           if (!data?.trim()) {
-            toast.error("Please enter some text to analyze");
+            toast.error("No input detected.");
             return;
           }
           result = await mockAnalyzeText(data);
           break;
         case 'audio':
+          if (!audioFile) {
+            toast.error("No input detected.");
+            return;
+          }
           result = await mockAnalyzeAudio();
           break;
         case 'video':
+          if (!videoFile) {
+            toast.error("No input detected.");
+            return;
+          }
           result = await mockAnalyzeVideo();
           break;
+      }
+      if (!result) {
+        toast.error("Unable to analyze input. Please try again.");
+        return;
       }
       setResults(prev => ({ ...prev, [type]: result }));
       toast.success(`${type.charAt(0).toUpperCase() + type.slice(1)} analysis complete`);
     } catch (error) {
-      toast.error("Analysis failed. Please try again.");
+      toast.error("Unable to analyze input. Please try again.");
     } finally {
       setIsAnalyzing(false);
     }
@@ -228,6 +242,7 @@ export default function Dashboard() {
   };
 
   const handleAudioFile = (file: File | null) => {
+    setAudioFile(file);
     if (!file) return;
     const ok = /\.(mp3|wav|m4a)$/i.test(file.name);
     if (!ok) {
@@ -238,6 +253,7 @@ export default function Dashboard() {
   };
 
   const handleVideoFile = (file: File | null) => {
+    setVideoFile(file);
     if (!file) return;
     const ok = /\.(mp4|mov|avi)$/i.test(file.name);
     if (!ok) {
@@ -400,7 +416,7 @@ export default function Dashboard() {
                     <div className="flex gap-3">
                       <Button
                         onClick={() => handleAnalyze('text', textInput)}
-                        disabled={isAnalyzing}
+                        disabled={isAnalyzing || !textInput.trim()}
                         className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
                       >
                         {isAnalyzing ? (
@@ -454,7 +470,7 @@ export default function Dashboard() {
                   <div className="flex gap-3">
                     <Button
                       onClick={() => handleAnalyze('audio')}
-                      disabled={isAnalyzing}
+                      disabled={isAnalyzing || !audioFile}
                       className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
                     >
                       {isAnalyzing ? (
@@ -507,7 +523,7 @@ export default function Dashboard() {
                   <div className="flex gap-3">
                     <Button
                       onClick={() => handleAnalyze('video')}
-                      disabled={isAnalyzing}
+                      disabled={isAnalyzing || !videoFile}
                       className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
                     >
                       {isAnalyzing ? (
@@ -543,7 +559,21 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          {/* Results Section with enhanced channel-specific UI */}
+          {/* Placeholder when no input/results yet */}
+          {!results.text && !results.audio && !results.video && (
+            <Card className="bg-slate-900/50 border-slate-700 mb-6">
+              <CardHeader>
+                <CardTitle className="text-white">Waiting for input</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-slate-300">
+                  Waiting for input... Please upload text, audio, or video.
+                </p>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Results Section */}
           {Object.entries(results).map(([type, result]) => (
             result && (
               <motion.div
