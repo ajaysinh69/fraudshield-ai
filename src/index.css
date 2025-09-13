@@ -112,6 +112,15 @@
   --sidebar-ring: #111827;
 }
 
+::selection {
+  background: color-mix(in oklab, var(--primary) 35%, transparent);
+  color: var(--foreground);
+}
+.dark ::selection {
+  background: color-mix(in oklab, var(--primary) 60%, black);
+  color: var(--primary-foreground);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
