@@ -16,13 +16,26 @@ import {
   Github,
   Twitter,
   Mail,
-  Upload
+  Upload,
+  Sun,
+  Moon
 } from "lucide-react";
 import { useNavigate } from "react-router";
+import { useState } from "react";
 
 export default function Landing() {
   const { isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  // Add dark mode state and toggler
+  const [dark, setDark] = useState<boolean>(() => {
+    return document.documentElement.classList.contains("dark");
+  });
+  const toggleDark = () => {
+    const root = document.documentElement;
+    root.classList.toggle("dark");
+    setDark(root.classList.contains("dark"));
+  };
 
   const handleGetStarted = () => {
     if (isAuthenticated) {
@@ -87,6 +100,16 @@ export default function Landing() {
               className="text-slate-300 hover:text-white hover:bg-slate-800"
             >
               About
+            </Button>
+            {/* Dark/Light toggle button */}
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={toggleDark}
+              aria-label="Toggle dark mode"
+              className="border-slate-700 text-slate-300 hover:bg-slate-800"
+            >
+              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
             <Button 
               onClick={handleGetStarted}
