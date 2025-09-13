@@ -371,24 +371,24 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="relative flex w-full items-center gap-2 overflow-x-auto whitespace-nowrap bg-muted p-1 rounded-md">
+              <TabsList className="relative grid grid-cols-3 w-full items-center overflow-hidden bg-muted p-0 rounded-md">
                 <TabsTrigger
                   value="text"
-                  className="shrink-0 px-4 py-2 rounded-md transition-all data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:ring-2 data-[state=active]:ring-primary font-medium"
+                  className="w-full justify-center px-4 py-2 rounded-md transition-all data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:ring-2 data-[state=active]:ring-primary font-medium text-slate-700 dark:text-slate-300"
                 >
                   <FileText className="h-4 w-4 mr-2" />
                   Text
                 </TabsTrigger>
                 <TabsTrigger
                   value="audio"
-                  className="shrink-0 px-4 py-2 rounded-md transition-all data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:ring-2 data-[state=active]:ring-primary font-medium"
+                  className="w-full justify-center px-4 py-2 rounded-md transition-all data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:ring-2 data-[state=active]:ring-primary font-medium text-slate-700 dark:text-slate-300"
                 >
                   <Mic className="h-4 w-4 mr-2" />
                   Audio
                 </TabsTrigger>
                 <TabsTrigger
                   value="video"
-                  className="shrink-0 px-4 py-2 rounded-md transition-all data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:ring-2 data-[state=active]:ring-primary font-medium"
+                  className="w-full justify-center px-4 py-2 rounded-md transition-all data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:ring-2 data-[state=active]:ring-primary font-medium text-slate-700 dark:text-slate-300"
                 >
                   <Video className="h-4 w-4 mr-2" />
                   Video
@@ -402,7 +402,7 @@ export default function Dashboard() {
                   initial={false}
                   animate={{
                     width: "33.3333%",
-                    x: `${selectedIndex * 100 / 3}%`,
+                    x: `${(selectedIndex * 100) / 3}%`,
                   }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 />
