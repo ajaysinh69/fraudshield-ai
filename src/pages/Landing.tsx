@@ -23,11 +23,23 @@ import {
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
+import { useEffect } from "react";
 
 export default function Landing() {
   const { isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (menuOpen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+    return;
+  }, [menuOpen]);
 
   const handleGetStarted = () => {
     if (isAuthenticated) {
@@ -100,6 +112,7 @@ export default function Landing() {
               className="h-10 w-10"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
               onClick={() => setMenuOpen((v) => !v)}
             >
               {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -107,32 +120,51 @@ export default function Landing() {
           </div>
         </div>
 
-        {/* Mobile menu panel */}
+        {/* Mobile menu overlay (full-screen) */}
         {menuOpen && (
-          <motion.div
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -20, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden fixed top-[64px] inset-x-0 bottom-0 border-t border-border bg-card/90 backdrop-blur-sm z-40"
-          >
-            <div className="h-full overflow-y-auto px-4 py-6 flex flex-col gap-4">
-              <Button variant="ghost" className="justify-start min-h-11 w-full text-lg py-4" onClick={() => setMenuOpen(false)}>
-                Features
-              </Button>
-              <Button variant="ghost" className="justify-start min-h-11 w-full text-lg py-4" onClick={() => setMenuOpen(false)}>
-                About
-              </Button>
-              <Button
-                onClick={() => { setMenuOpen(false); handleGetStarted(); }}
-                disabled={isLoading}
-                className="min-h-11 w-full text-lg py-4"
-              >
-                {isAuthenticated ? "Dashboard" : "Get Started"}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </motion.div>
+          <div id="mobile-menu" className="md:hidden fixed inset-0 z-[60]">
+            {/* Backdrop */}
+            <button
+              aria-label="Close menu overlay"
+              onClick={() => setMenuOpen(false)}
+              className="absolute inset-0 bg-black/40"
+            />
+            {/* Sliding panel */}
+            <motion.div
+              initial={{ y: -40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -40, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="relative bg-card/95 backdrop-blur-md border-b border-border pt-4"
+            >
+              <div className="px-4 pb-6 flex flex-col gap-4">
+                <Button
+                  variant="ghost"
+                  className="justify-start min-h-11 w-full text-lg py-4"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Features
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="justify-start min-h-11 w-full text-lg py-4"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  About
+                </Button>
+                <Button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    handleGetStarted();
+                  }}
+                  className="min-h-11 w-full text-lg py-4"
+                >
+                  {isAuthenticated ? "Dashboard" : "Get Started"}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </motion.div>
+          </div>
         )}
       </nav>
 
