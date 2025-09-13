@@ -303,17 +303,17 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 sm:gap-4">
-          <div className="flex items-center gap-4">
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-card/80 backdrop-blur-md">
+        <div className="container mx-auto px-4 py-3 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 sm:gap-4">
+          <div className="flex items-center gap-3">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate("/")}
-              className=""
+              className="rounded-full bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600 transition-all duration-200 active:scale-95 px-4 py-2"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Home
+              Home
             </Button>
             <div className="flex items-center gap-2">
               <Shield className="h-6 w-6" />
@@ -327,17 +327,18 @@ export default function Dashboard() {
                 Welcome, {user.name || user.email || "User"}
               </span>
             )}
-            <Button variant="outline" onClick={signOut} className="min-h-11">
+            <Button variant="outline" onClick={signOut} className="min-h-11 rounded-md px-4 py-2 transition-all duration-200 hover:shadow">
               Sign Out
             </Button>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      {/* Add top padding to account for fixed header */}
+      <div className="pt-16 container mx-auto px-4 py-6">
         {/* Stats Strip */}
         <div className="mb-6">
-          <div className="bg-card border border-border rounded-lg p-4 flex flex-col sm:flex-row items-center justify-center gap-4 text-foreground">
+          <div className="bg-card border border-border rounded-xl shadow-md p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-center gap-4 text-foreground w-full">
             <div className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4" />
               <span>Scams Analyzed: <span className="font-semibold">{stats.analyzed}</span></span>
@@ -358,15 +359,15 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="text-center sm:text-left mb-8 transition-all duration-300">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Fraud Detection Dashboard</h1>
-            <p className="text-slate-400 text-base sm:text-lg">Upload content to analyze for potential scams and fraud</p>
+          <div className="text-center sm:text-left mb-6">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-1">Fraud Detection Dashboard</h1>
+            <p className="text-slate-500 dark:text-slate-300 text-base sm:text-lg">Upload content to analyze for potential scams and fraud</p>
           </div>
 
           {/* Main Detection Interface */}
-          <Card className="bg-card border-border mb-8 w-full">
+          <Card className="bg-card border-border rounded-xl shadow-md mb-6 w-full">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="text-lg font-semibold flex items-center gap-2">
                 <Shield className="h-5 w-5" />
                 Content Analysis
               </CardTitle>
@@ -411,7 +412,7 @@ export default function Dashboard() {
                       <Button
                         onClick={() => handleAnalyze('text', textInput)}
                         disabled={isAnalyzing || !textInput.trim()}
-                        className="w-full sm:w-auto min-h-11"
+                        className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black"
                       >
                         {isAnalyzing ? (
                           <>
@@ -429,7 +430,7 @@ export default function Dashboard() {
                         variant="outline"
                         onClick={() => handleUseSample('text')}
                         disabled={isAnalyzing}
-                        className="w-full sm:w-auto min-h-11"
+                        className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 hover:shadow"
                       >
                         {isAnalyzing ? (
                           <>
@@ -465,7 +466,7 @@ export default function Dashboard() {
                     <Button
                       onClick={() => handleAnalyze('audio')}
                       disabled={isAnalyzing || !audioFile}
-                      className="w-full sm:w-auto min-h-11"
+                      className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black"
                     >
                       {isAnalyzing ? (
                         <>
@@ -483,7 +484,7 @@ export default function Dashboard() {
                       variant="outline"
                       onClick={() => handleUseSample('audio')}
                       disabled={isAnalyzing}
-                      className="w-full sm:w-auto min-h-11"
+                      className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 hover:shadow"
                     >
                       {isAnalyzing ? (
                         <>
@@ -518,7 +519,7 @@ export default function Dashboard() {
                     <Button
                       onClick={() => handleAnalyze('video')}
                       disabled={isAnalyzing || !videoFile}
-                      className="w-full sm:w-auto min-h-11"
+                      className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black"
                     >
                       {isAnalyzing ? (
                         <>
@@ -536,7 +537,7 @@ export default function Dashboard() {
                       variant="outline"
                       onClick={() => handleUseSample('video')}
                       disabled={isAnalyzing}
-                      className="w-full sm:w-auto min-h-11"
+                      className="w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 hover:shadow"
                     >
                       {isAnalyzing ? (
                         <>
@@ -555,9 +556,9 @@ export default function Dashboard() {
 
           {/* Placeholder when no input/results yet */}
           {!results.text && !results.audio && !results.video && (
-            <Card className="bg-card border-border mb-6 w-full">
+            <Card className="bg-card border-border rounded-xl shadow-md mb-6 w-full">
               <CardHeader>
-                <CardTitle className="text-center sm:text-left">Waiting for input</CardTitle>
+                <CardTitle className="text-lg font-semibold text-center sm:text-left">Waiting for input</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-foreground text-center sm:text-left">
@@ -576,9 +577,9 @@ export default function Dashboard() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                <Card className="bg-card border-border mb-6">
+                <Card className="bg-card border-border rounded-xl shadow-md mb-6">
                   <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
+                    <CardTitle className="text-lg font-semibold flex items-center justify-between">
                       <span className="flex items-center gap-2">
                         {type === 'text' && <FileText className="h-5 w-5" />}
                         {type === 'audio' && <Mic className="h-5 w-5" />}
@@ -660,7 +661,7 @@ export default function Dashboard() {
                           variant={result.action === 'block' ? 'default' : 'outline'}
                           onClick={() => handleAction(type as any, 'block')}
                           disabled={!!actionLoading[`${type}:block`] || isAnalyzing}
-                          className={' w-full sm:w-auto min-h-11'}
+                          className={' w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black'}
                         >
                           {actionLoading[`${type}:block`] ? (
                             <>
@@ -678,7 +679,7 @@ export default function Dashboard() {
                           variant={result.action === 'report' ? 'default' : 'outline'}
                           onClick={() => handleAction(type as any, 'report')}
                           disabled={!!actionLoading[`${type}:report`] || isAnalyzing}
-                          className={' w-full sm:w-auto min-h-11'}
+                          className={' w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black'}
                         >
                           {actionLoading[`${type}:report`] ? (
                             <>
@@ -696,7 +697,7 @@ export default function Dashboard() {
                           variant={result.action === 'ignore' ? 'default' : 'outline'}
                           onClick={() => handleAction(type as any, 'ignore')}
                           disabled={!!actionLoading[`${type}:ignore`] || isAnalyzing}
-                          className={' w-full sm:w-auto min-h-11'}
+                          className={' w-full sm:w-auto min-h-11 rounded-md px-4 py-2 transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-black'}
                         >
                           {actionLoading[`${type}:ignore`] ? (
                             <>
@@ -718,6 +719,13 @@ export default function Dashboard() {
             )
           ))}
         </motion.div>
+
+        {/* Footer */}
+        <footer className="mt-8 py-6 text-center">
+          <p className="text-xs text-muted-foreground">
+            Prototype for Hackathon – Not production-ready
+          </p>
+        </footer>
       </div>
     </div>
   );
