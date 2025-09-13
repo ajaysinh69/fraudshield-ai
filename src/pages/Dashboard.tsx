@@ -18,13 +18,12 @@ import {
   Flag,
   Check,
   ArrowLeft,
-  Loader2,
-  Sun,
-  Moon
+  Loader2
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import ThemeToggle from "@/components/ThemeToggle";
 
 interface DetectionResult {
   riskScore: number;
@@ -70,49 +69,53 @@ export default function Dashboard() {
     return () => clearInterval(interval);
   }, []);
 
-  // Dark mode toggle
-  const [dark, setDark] = useState<boolean>(() => {
-    return document.documentElement.classList.contains("dark");
-  });
-  const toggleDark = () => {
-    const root = document.documentElement;
-    root.classList.toggle("dark");
-    setDark(root.classList.contains("dark"));
-  };
-
-  // Helper: highlight keywords in text (red underline)
-  const highlightKeywords = (text: string, keywords: string[]) => {
-    if (!text) return null;
-    // Sort by length to avoid partial overlaps
-    const sorted = [...keywords].sort((a, b) => b.length - a.length);
-    const pattern = new RegExp(`(${sorted.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`, "gi");
-    const parts = text.split(pattern);
-    return parts.map((part, idx) => {
-      const match = sorted.some(k => k.toLowerCase() === part.toLowerCase());
-      return match ? (
-        <span key={idx} className="text-red-400 underline decoration-red-500 underline-offset-4">{part}</span>
-      ) : (
-        <span key={idx}>{part}</span>
-      );
-    });
-  };
-
-  // Helper: highlight words (yellow) in transcript
-  const highlightTranscript = (text: string, keywords: string[]) => {
-    if (!text) return null;
-    const pattern = new RegExp(`(${keywords.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`, "gi");
-    const parts = text.split(pattern);
-    return parts.map((part, idx) => {
-      const match = keywords.some(k => k.toLowerCase() === part.toLowerCase());
-      return match ? (
-        <span key={idx} className="bg-yellow-500/20 text-yellow-300 px-1 rounded">{part}</span>
-      ) : (
-        <span key={idx}>{part}</span>
-      );
-    });
-  };
-
   const suspiciousKeywords = ['urgent', 'click now', 'verify account', 'suspended', 'winner', 'congratulations', 'transfer now', 'otp', 'account blocked', 'legal action', 'police'];
+
+  // ADD: safe highlighter helpers
+  const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  function highlightWithList(text: string, list: string, className: string): ReactNode {
+    if (!text) return <span />;
+    const keywords = list.split("|").filter(Boolean);
+    if (keywords.length === 0) return <span>{text}</span>;
+    const regex = new RegExp(`(${keywords.map(escapeRegExp).join("|")})`, "gi");
+
+    const parts: Array<string | ReactNode> = [];
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+
+    while ((match = regex.exec(text)) !== null) {
+      const start = match.index;
+      const end = start + match[0].length;
+      if (start > lastIndex) parts.push(text.slice(lastIndex, start));
+      parts.push(
+        <mark key={start} className={className}>
+          {match[0]}
+        </mark>
+      );
+      lastIndex = end;
+    }
+    if (lastIndex < text.length) parts.push(text.slice(lastIndex));
+
+    return <span>{parts}</span>;
+  }
+
+  // Exposed helpers used in JSX
+  function highlightKeywords(text: string, keywords: string[]): ReactNode {
+    return highlightWithList(
+      text,
+      keywords.join("|"),
+      "bg-red-500/20 text-red-400 rounded px-1"
+    );
+  }
+
+  function highlightTranscript(text: string, keywords: string[]): ReactNode {
+    return highlightWithList(
+      text,
+      keywords.join("|"),
+      "bg-yellow-500/20 text-yellow-400 rounded px-1"
+    );
+  }
 
   const evidenceOnlyClassify = (text: string) => {
     const lowered = (text || "").toLowerCase();
@@ -318,15 +321,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={toggleDark}
-              className=""
-              aria-label="Toggle dark mode"
-            >
-              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </Button>
+            <ThemeToggle />
             {user && (
               <span className="hidden sm:block text-muted-foreground">
                 Welcome, {user.name || user.email || "User"}

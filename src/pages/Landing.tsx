@@ -16,26 +16,14 @@ import {
   Github,
   Twitter,
   Mail,
-  Upload,
-  Sun,
-  Moon
+  Upload
 } from "lucide-react";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Landing() {
   const { isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-
-  // Add dark mode state and toggler
-  const [dark, setDark] = useState<boolean>(() => {
-    return document.documentElement.classList.contains("dark");
-  });
-  const toggleDark = () => {
-    const root = document.documentElement;
-    root.classList.toggle("dark");
-    setDark(root.classList.contains("dark"));
-  };
 
   const handleGetStarted = () => {
     if (isAuthenticated) {
@@ -95,16 +83,7 @@ export default function Landing() {
             <Button variant="ghost">
               About
             </Button>
-            {/* Dark/Light toggle button */}
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={toggleDark}
-              aria-label="Toggle dark mode"
-              className=""
-            >
-              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </Button>
+            <ThemeToggle />
             <Button onClick={handleGetStarted} disabled={isLoading}>
               {isAuthenticated ? "Dashboard" : "Get Started"}
               <ArrowRight className="ml-2 h-4 w-4" />
