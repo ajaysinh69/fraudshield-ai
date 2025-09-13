@@ -393,19 +393,6 @@ export default function Dashboard() {
                   <Video className="h-4 w-4 mr-2" />
                   Video
                 </TabsTrigger>
-
-                {/* Animated active tab underline indicator */}
-                <motion.span
-                  layout
-                  aria-hidden
-                  className="absolute bottom-0 left-0 h-0.5 bg-primary rounded"
-                  initial={false}
-                  animate={{
-                    width: "33.3333%",
-                    x: `${(selectedIndex * 100) / 3}%`,
-                  }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                />
               </TabsList>
 
               <TabsContent value="text" className="space-y-4">
