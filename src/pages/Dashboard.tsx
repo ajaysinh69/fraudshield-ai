@@ -332,16 +332,17 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="grid w-full grid-cols-3 bg-slate-800 border-slate-700">
-                  <TabsTrigger value="text" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                {/* Make tab triggers in a single horizontal row with scroll on small screens */}
+                <TabsList className="flex w-full items-center gap-2 overflow-x-auto whitespace-nowrap bg-slate-800 border-slate-700 p-1 rounded-md">
+                  <TabsTrigger value="text" className="shrink-0 data-[state=active]:bg-blue-600 data-[state=active]:text-white px-4 py-2 rounded-md">
                     <FileText className="h-4 w-4 mr-2" />
                     Text
                   </TabsTrigger>
-                  <TabsTrigger value="audio" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                  <TabsTrigger value="audio" className="shrink-0 data-[state=active]:bg-blue-600 data-[state=active]:text-white px-4 py-2 rounded-md">
                     <Mic className="h-4 w-4 mr-2" />
                     Audio
                   </TabsTrigger>
-                  <TabsTrigger value="video" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                  <TabsTrigger value="video" className="shrink-0 data-[state=active]:bg-blue-600 data-[state=active]:text-white px-4 py-2 rounded-md">
                     <Video className="h-4 w-4 mr-2" />
                     Video
                   </TabsTrigger>
