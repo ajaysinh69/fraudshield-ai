@@ -110,21 +110,43 @@ export default function Dashboard() {
     });
   };
 
-  const suspiciousKeywords = ['urgent', 'click now', 'verify account', 'suspended', 'winner', 'congratulations'];
+  const suspiciousKeywords = ['urgent', 'click now', 'verify account', 'suspended', 'winner', 'congratulations', 'transfer now', 'otp', 'account blocked', 'legal action', 'police'];
+
+  const evidenceOnlyClassify = (text: string) => {
+    const lowered = (text || "").toLowerCase();
+    const evidence = suspiciousKeywords.filter(k => lowered.includes(k.toLowerCase()));
+    if (evidence.length === 0) {
+      return {
+        label: "UNCERTAIN" as const,
+        score: 0,
+        evidence,
+        explanation: "",
+        recommended_action: "REVIEW" as const, // Not displayed in UI but kept for completeness
+      };
+    }
+    return {
+      label: "FRAUD" as const,
+      score: 90,
+      evidence,
+      explanation: evidence.length === 1 ? `Contains ${evidence[0]}` : `Contains ${evidence.join(", ")}`,
+      recommended_action: "BLOCK" as const,
+    };
+  };
 
   const mockAnalyzeText = async (text: string): Promise<DetectionResult> => {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const foundSuspicious = suspiciousKeywords.filter(keyword => 
-      text.toLowerCase().includes(keyword.toLowerCase())
-    );
-    const riskScore = Math.min(foundSuspicious.length * 25 + Math.random() * 20, 95);
+    const verdict = evidenceOnlyClassify(text);
+
+    // Map label/score to UI fields
+    const riskScore = verdict.score; // 0 for UNCERTAIN, 90 for FRAUD based on evidence-only
+    const explanation = verdict.explanation || "No evidence terms found.";
+    const suspiciousElements = verdict.evidence;
+
     return {
-      riskScore: Math.round(riskScore),
-      explanation: foundSuspicious.length > 0 
-        ? `Detected ${foundSuspicious.length} suspicious pattern(s). Common phishing indicators found.`
-        : "No obvious scam patterns detected. Message appears legitimate.",
-      suspiciousElements: foundSuspicious,
-      action: null
+      riskScore,
+      explanation,
+      suspiciousElements,
+      action: null,
     };
   };
 
