@@ -300,6 +300,8 @@ export default function Dashboard() {
     return "bg-green-500/20 text-green-400 border-green-500/30";
   };
 
+  const selectedIndex = activeTab === "text" ? 0 : activeTab === "audio" ? 1 : 2;
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -335,7 +337,12 @@ export default function Dashboard() {
       </header>
 
       {/* Add top padding to account for fixed header */}
-      <div className="pt-16 container mx-auto px-4 py-6">
+      <motion.div
+        className="pt-16 container mx-auto px-4 py-6"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+      >
         {/* Stats Strip */}
         <div className="mb-6">
           <div className="bg-white dark:bg-card border border-border rounded-xl shadow-md p-6 flex flex-col sm:flex-row items-center justify-center gap-4 text-foreground w-full">
@@ -364,19 +371,41 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="flex w-full items-center gap-2 overflow-x-auto whitespace-nowrap bg-muted p-1 rounded-md">
-                <TabsTrigger value="text" className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-md">
+              <TabsList className="relative flex w-full items-center gap-2 overflow-x-auto whitespace-nowrap bg-muted p-1 rounded-md">
+                <TabsTrigger
+                  value="text"
+                  className="shrink-0 px-4 py-2 rounded-md transition-all data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:ring-2 data-[state=active]:ring-primary font-medium"
+                >
                   <FileText className="h-4 w-4 mr-2" />
                   Text
                 </TabsTrigger>
-                <TabsTrigger value="audio" className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-md">
+                <TabsTrigger
+                  value="audio"
+                  className="shrink-0 px-4 py-2 rounded-md transition-all data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:ring-2 data-[state=active]:ring-primary font-medium"
+                >
                   <Mic className="h-4 w-4 mr-2" />
                   Audio
                 </TabsTrigger>
-                <TabsTrigger value="video" className="shrink-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-md">
+                <TabsTrigger
+                  value="video"
+                  className="shrink-0 px-4 py-2 rounded-md transition-all data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:ring-2 data-[state=active]:ring-primary font-medium"
+                >
                   <Video className="h-4 w-4 mr-2" />
                   Video
                 </TabsTrigger>
+
+                {/* Animated active tab underline indicator */}
+                <motion.span
+                  layout
+                  aria-hidden
+                  className="absolute bottom-0 left-0 h-0.5 bg-primary rounded"
+                  initial={false}
+                  animate={{
+                    width: "33.3333%",
+                    x: `${selectedIndex * 100 / 3}%`,
+                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
               </TabsList>
 
               <TabsContent value="text" className="space-y-4">
@@ -715,7 +744,7 @@ export default function Dashboard() {
           Prototype for Hackathon – Not production-ready
         </p>
       </footer>
-    </div>
+    </motion.div>
   </div>
   );
 }
