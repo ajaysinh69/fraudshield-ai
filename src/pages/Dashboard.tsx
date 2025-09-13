@@ -24,6 +24,8 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
+import { useAction } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 interface DetectionResult {
   riskScore: number;
@@ -48,6 +50,7 @@ export default function Dashboard() {
   const [actionLoading, setActionLoading] = useState<Record<string, boolean>>({});
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
+  const transcribe = useAction(api.assemblyai.transcribe);
 
   // Dynamic demo stats
   const [stats, setStats] = useState({ analyzed: 0, blocked: 0, users: 0 });
@@ -113,7 +116,7 @@ export default function Dashboard() {
     return highlightWithList(
       text,
       keywords.join("|"),
-      "bg-yellow-500/20 text-yellow-400 rounded px-1"
+      "bg-red-500/10 text-red-400 underline underline-offset-2 decoration-red-500/70 rounded px-0.5"
     );
   }
 
@@ -138,6 +141,40 @@ export default function Dashboard() {
     };
   };
 
+  const scamKeywords = ["transfer", "otp", "blocked", "police", "urgent"];
+  function riskFromTranscript(t: string) {
+    const lowered = (t || "").toLowerCase();
+    const hits = scamKeywords.filter((k) => lowered.includes(k.toLowerCase()));
+    const score = Math.min(100, hits.length * 20 + (hits.length > 0 ? 40 : 0));
+    return { score, hits };
+  }
+
+  const analyzeMedia = async (type: "audio" | "video", file: File): Promise<DetectionResult> => {
+    try {
+      const bytes = await file.arrayBuffer();
+      const res = await transcribe({
+        file: bytes,
+        filename: file.name,
+        mimeType: file.type || (type === "audio" ? "audio/mpeg" : "video/mp4"),
+        mediaType: type,
+      });
+      const transcript = res?.text || "";
+      const { score, hits } = riskFromTranscript(transcript);
+      return {
+        riskScore: score,
+        explanation:
+          transcript.length > 0
+            ? "Transcript analyzed. Risk derived from scam keyword presence."
+            : "No transcript text returned.",
+        suspiciousElements: hits.length ? hits : [],
+        action: null,
+        transcript,
+      };
+    } catch (e) {
+      throw e;
+    }
+  };
+
   const mockAnalyzeText = async (text: string): Promise<DetectionResult> => {
     await new Promise(resolve => setTimeout(resolve, 2000));
     const verdict = evidenceOnlyClassify(text);
@@ -155,55 +192,37 @@ export default function Dashboard() {
     };
   };
 
-  const mockAnalyzeAudio = async (): Promise<DetectionResult> => {
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    return {
-      riskScore: Math.round(Math.random() * 40 + 30),
-      explanation: "Voice analysis complete. Detected potential voice spoofing patterns and suspicious transcript content.",
-      suspiciousElements: ["Robotic voice patterns", "Background noise inconsistencies", "Urgent language"],
-      action: null,
-      transcript: "Hello, this is an urgent notice. Your account has been suspended. Please verify account details now to avoid penalties."
-    };
-  };
-
-  const mockAnalyzeVideo = async (): Promise<DetectionResult> => {
-    await new Promise(resolve => setTimeout(resolve, 4000));
-    const likelihood = Math.round(Math.random() * 60 + 20);
-    return {
-      riskScore: Math.round(Math.random() * 30 + 15),
-      explanation: "Deepfake analysis complete. Minor facial inconsistencies detected; assessing authenticity.",
-      suspiciousElements: ["Frame 0:23 - Slight lip sync mismatch", "Lighting inconsistency at 1:15"],
-      action: null,
-      deepfakeLikelihood: likelihood
-    };
-  };
-
   const handleAnalyze = async (type: 'text' | 'audio' | 'video', data?: string) => {
     setIsAnalyzing(true);
     try {
       let result: DetectionResult | undefined;
       switch (type) {
-        case 'text':
+        case 'text': {
           if (!data?.trim()) {
             toast.error("No input detected.");
             return;
           }
           result = await mockAnalyzeText(data);
           break;
-        case 'audio':
-          if (!audioFile) {
-            toast.error("No input detected.");
+        }
+        case 'audio': {
+          if (!audioFile || !/\.(mp3|wav|m4a)$/i.test(audioFile.name)) {
+            toast.error("Please upload a valid audio/video file.");
             return;
           }
-          result = await mockAnalyzeAudio();
+          toast("Analyzing audio…");
+          result = await analyzeMedia('audio', audioFile);
           break;
-        case 'video':
-          if (!videoFile) {
-            toast.error("No input detected.");
+        }
+        case 'video': {
+          if (!videoFile || !/\.(mp4|mov|avi)$/i.test(videoFile.name)) {
+            toast.error("Please upload a valid audio/video file.");
             return;
           }
-          result = await mockAnalyzeVideo();
+          toast("Analyzing video…");
+          result = await analyzeMedia('video', videoFile);
           break;
+        }
       }
       if (!result) {
         toast.error("Unable to analyze input. Please try again.");
@@ -212,7 +231,8 @@ export default function Dashboard() {
       setResults(prev => ({ ...prev, [type]: result }));
       toast.success(`${type.charAt(0).toUpperCase() + type.slice(1)} analysis complete`);
     } catch (error) {
-      toast.error("Unable to analyze input. Please try again.");
+      console.error(error);
+      toast.error("Unable to process this file. Please try again.");
     } finally {
       setIsAnalyzing(false);
     }
@@ -221,13 +241,45 @@ export default function Dashboard() {
   // New: Use Sample Input button handler
   const handleUseSample = async (type: 'text' | 'audio' | 'video') => {
     if (type === 'text') {
-      const sample = "Congratulations! You are a winner. Urgent: verify account now or your access will be suspended. Click now.";
+      const sample = "Urgent: Your account is blocked. Transfer the OTP now or the police will be notified.";
       setTextInput(sample);
       await handleAnalyze('text', sample);
-    } else if (type === 'audio') {
-      await handleAnalyze('audio');
+      return;
+    }
+
+    const fetchAndAnalyze = async (url: string, filename: string, mime: string, mediaType: 'audio' | 'video') => {
+      try {
+        setIsAnalyzing(true);
+        toast(`Loading sample ${mediaType}…`);
+        const res = await fetch(url);
+        const buf = await res.arrayBuffer();
+        const file = new File([buf], filename, { type: mime });
+        const result = await analyzeMedia(mediaType, file);
+        setResults(prev => ({ ...prev, [mediaType]: result }));
+        toast.success(`${mediaType === 'audio' ? 'Audio' : 'Video'} analysis complete`);
+      } catch {
+        toast.error("Unable to process this file. Please try again.");
+      } finally {
+        setIsAnalyzing(false);
+      }
+    };
+
+    if (type === 'audio') {
+      // Small public WAV sample
+      await fetchAndAnalyze(
+        "https://www2.cs.uic.edu/~i101/SoundFiles/StarWars60.wav",
+        "sample.wav",
+        "audio/wav",
+        "audio"
+      );
     } else {
-      await handleAnalyze('video');
+      // Public small MP4 sample
+      await fetchAndAnalyze(
+        "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
+        "sample.mp4",
+        "video/mp4",
+        "video"
+      );
     }
   };
 
@@ -625,8 +677,8 @@ export default function Dashboard() {
                   {type === 'audio' && result.transcript && (
                     <div>
                       <h4 className="font-semibold mb-2">Transcript</h4>
-                      <div className="leading-relaxed">
-                        {highlightTranscript(result.transcript, ["urgent", "suspended", "verify", "now", "penalties"])}
+                      <div className="leading-relaxed border border-border rounded-md p-3 max-h-64 overflow-auto bg-white dark:bg-card text-foreground">
+                        {highlightTranscript(result.transcript, ["transfer", "otp", "blocked", "police", "urgent"])}
                       </div>
                     </div>
                   )}
@@ -636,8 +688,8 @@ export default function Dashboard() {
                       <h4 className="font-semibold mb-2">Deepfake Likelihood</h4>
                       <div className="w-full bg-muted border border-border rounded h-3 overflow-hidden">
                         <div
-                          className={`h-full ${result.deepfakeLikelihood >= 70 ? "bg-red-600" : result.deepfakeLikelihood >= 40 ? "bg-yellow-500" : "bg-green-600"}`}
-                          style={{ width: `${result.deepfakeLikelihood}%` }}
+                          className={`${result.deepfakeLikelihood >= 70 ? "bg-red-600" : result.deepfakeLikelihood >= 40 ? "bg-yellow-500" : "bg-green-600"}`}
+                          style={{ width: `${result.deepfakeLikelihood}%`, height: "100%" }}
                         />
                       </div>
                       <p className="mt-2 text-foreground">{result.deepfakeLikelihood}% likelihood</p>
