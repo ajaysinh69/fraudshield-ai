@@ -371,7 +371,7 @@ export default function Dashboard() {
                       <Button
                         onClick={() => handleAnalyze('text', textInput)}
                         disabled={isAnalyzing}
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                        className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
                       >
                         {isAnalyzing ? (
                           <>
@@ -389,7 +389,7 @@ export default function Dashboard() {
                         variant="outline"
                         onClick={() => handleUseSample('text')}
                         disabled={isAnalyzing}
-                        className="border-slate-700 text-slate-300 hover:bg-slate-800"
+                        className="border-slate-700 text-slate-300 hover:bg-slate-800 w-full sm:w-auto"
                       >
                         Use Sample Input
                       </Button>
@@ -418,7 +418,7 @@ export default function Dashboard() {
                     <Button
                       onClick={() => handleAnalyze('audio')}
                       disabled={isAnalyzing}
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
                     >
                       {isAnalyzing ? (
                         <>
@@ -436,7 +436,7 @@ export default function Dashboard() {
                       variant="outline"
                       onClick={() => handleUseSample('audio')}
                       disabled={isAnalyzing}
-                      className="border-slate-700 text-slate-300 hover:bg-slate-800"
+                      className="border-slate-700 text-slate-300 hover:bg-slate-800 w-full sm:w-auto"
                     >
                       Use Sample Input
                     </Button>
@@ -464,7 +464,7 @@ export default function Dashboard() {
                     <Button
                       onClick={() => handleAnalyze('video')}
                       disabled={isAnalyzing}
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
                     >
                       {isAnalyzing ? (
                         <>
@@ -482,7 +482,7 @@ export default function Dashboard() {
                       variant="outline"
                       onClick={() => handleUseSample('video')}
                       disabled={isAnalyzing}
-                      className="border-slate-700 text-slate-300 hover:bg-slate-800"
+                      className="border-slate-700 text-slate-300 hover:bg-slate-800 w-full sm:w-auto"
                     >
                       Use Sample Input
                     </Button>
@@ -518,7 +518,7 @@ export default function Dashboard() {
                   <CardContent className="space-y-6">
                     {/* Risk Score */}
                     <div className="text-center">
-                      <div className={`text-6xl font-bold ${getRiskColor(result.riskScore)} mb-2`}>
+                      <div className={`text-5xl md:text-6xl font-bold ${getRiskColor(result.riskScore)} mb-2`}>
                         {result.riskScore}%
                       </div>
                       <p className="text-slate-400">Risk Score</p>
@@ -580,13 +580,15 @@ export default function Dashboard() {
                     {/* Action Buttons */}
                     <div>
                       <h4 className="text-white font-semibold mb-3">Take Action</h4>
-                      <div className="flex gap-3">
+                      <div className="flex flex-col sm:flex-row gap-3">
                         <Button
                           variant={result.action === 'block' ? 'default' : 'outline'}
                           onClick={() => handleAction(type as any, 'block')}
-                          className={result.action === 'block' 
-                            ? 'bg-red-600 hover:bg-red-700 text-white' 
-                            : 'border-red-500/30 text-red-400 hover:bg-red-500/10'
+                          className={
+                            (result.action === 'block'
+                              ? 'bg-red-600 hover:bg-red-700 text-white'
+                              : 'border-red-500/30 text-red-400 hover:bg-red-500/10') +
+                            ' w-full sm:w-auto'
                           }
                         >
                           <X className="h-4 w-4 mr-2" />
@@ -595,9 +597,11 @@ export default function Dashboard() {
                         <Button
                           variant={result.action === 'report' ? 'default' : 'outline'}
                           onClick={() => handleAction(type as any, 'report')}
-                          className={result.action === 'report' 
-                            ? 'bg-yellow-600 hover:bg-yellow-700 text-white' 
-                            : 'border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10'
+                          className={
+                            (result.action === 'report'
+                              ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                              : 'border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10') +
+                            ' w-full sm:w-auto'
                           }
                         >
                           <Flag className="h-4 w-4 mr-2" />
@@ -606,9 +610,11 @@ export default function Dashboard() {
                         <Button
                           variant={result.action === 'ignore' ? 'default' : 'outline'}
                           onClick={() => handleAction(type as any, 'ignore')}
-                          className={result.action === 'ignore' 
-                            ? 'bg-green-600 hover:bg-green-700 text-white' 
-                            : 'border-green-500/30 text-green-400 hover:bg-green-500/10'
+                          className={
+                            (result.action === 'ignore'
+                              ? 'bg-green-600 hover:bg-green-700 text-white'
+                              : 'border-green-500/30 text-green-400 hover:bg-green-500/10') +
+                            ' w-full sm:w-auto'
                           }
                         >
                           <Check className="h-4 w-4 mr-2" />
